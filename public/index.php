@@ -9,3 +9,6 @@ use App\Kernel\App;
 $app = new App();
 
 $app->run();
+
+phpinfo();
+
