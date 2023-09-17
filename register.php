@@ -5,7 +5,7 @@ use apllication\Models\UserModel;
 
 require_once "session.php";
 require_once "vendor/autoload.php";
-include 'App/Views/template_view.php';
+include 'App/View/template_view.php';
 include 'database.php';
 
 $userModel = new UserModel(getPDO());

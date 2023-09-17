@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <input type="submit" name="submit" class="btn btn-primary" value="Submit">
                 </div>
-                <p>Don't have an account? <a href="../../register.php">Register here</a>.</p>
+                <p>Don't have an account? <a href="../../../../register.php">Register here</a>.</p>
             </form>
         </div>
     </div>

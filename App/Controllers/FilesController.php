@@ -6,6 +6,6 @@ class FilesController
 {
     public function index():void
     {
-        include_once APP_PATH . '/App/Views/template_view.php';
+        include_once APP_PATH . '/App/View/template_view.php';
     }
 }

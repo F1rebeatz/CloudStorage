@@ -1,8 +1,7 @@
 {
   "autoload": {
     "psr-4": {
-      "App\\": "App/",
-      "App\\Kernel": "Kernel/"
+      "App\\": "App/"
     }
   },
   "require": {
