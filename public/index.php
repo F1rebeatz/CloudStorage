@@ -10,5 +10,3 @@ $app = new App();
 
 $app->run();
 
-phpinfo();
-
