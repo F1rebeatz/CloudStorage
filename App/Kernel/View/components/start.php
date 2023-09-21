@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>CloudStorage</title>
     <link href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/public/css/app.css">
+    <link  href="/public/css/app.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">

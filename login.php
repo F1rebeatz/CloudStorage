@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 }
 
 $content = include("login_view.php");
-include("template_view.php");
+include("home.php");
 
 
 

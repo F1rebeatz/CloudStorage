@@ -5,7 +5,7 @@ use apllication\Models\UserModel;
 
 require_once "session.php";
 require_once "vendor/autoload.php";
-include 'App/View/template_view.php';
+include 'App/View/home.php';
 include 'database.php';
 
 $userModel = new UserModel(getPDO());
@@ -45,5 +45,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 }
 
 $content = include 'register_view.php';
-include 'template_view.php';
+include 'home.php';
 

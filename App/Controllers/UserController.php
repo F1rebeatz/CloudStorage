@@ -57,7 +57,7 @@ class UserController
 
         if (!empty($errors)) {
             $content = include 'register_view.php';
-            include 'template_view.php';
+            include 'home.php';
             exit;
         }
 
@@ -77,7 +77,7 @@ class UserController
         exit;
 
         $content = include 'register_view.php';
-        include 'template_view.php';
+        include 'home.php';
     }
 
     public function login(array $userData): bool

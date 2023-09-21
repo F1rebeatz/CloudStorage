@@ -2,7 +2,7 @@
 
 namespace App\Kernel\Exceptions;
 
-class ViewNotFoundException
+class ViewNotFoundException extends \Exception
 {
 
 }

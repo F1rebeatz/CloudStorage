@@ -8,7 +8,7 @@ class Route
     private string $method;
     private $action;
 
-    public function __construct($uri, $method, $action)
+    public function __construct(string $uri, string $method, mixed $action)
     {
         $this->uri = $uri;
         $this->method = $method;
