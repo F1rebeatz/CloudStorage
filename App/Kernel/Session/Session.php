@@ -14,12 +14,12 @@ class Session implements SessionInterface
         $_SESSION[$key] = $value;
     }
 
-    public function get(string $key, $default = null): string
+    public function get(string $key, $default = null)
     {
         return $_SESSION[$key] ?? $default;
     }
 
-    public function getFlash(string $key, $default = null):string
+    public function getFlash(string $key, $default = null)
     {
         $value = $this->get($key, $default);
         $this->remove($key);
