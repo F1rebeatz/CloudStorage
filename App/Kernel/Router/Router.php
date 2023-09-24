@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Kernel\Router;
+use App\Auth\AuthInterface;
 use App\Database\Database;
 use App\Database\DatabaseInterface;
 use App\Kernel\Http\Redirect;
@@ -25,6 +26,7 @@ class Router implements RouterInterface
         private RedirectInterface $redirect,
         private SessionInterface $session,
         private DatabaseInterface $database,
+        private AuthInterface $auth,
     )
     {
         $this->initRoutes();
@@ -36,6 +38,7 @@ class Router implements RouterInterface
         foreach ($routes as $route) {
             $this->routes[$route->getMethod()][$route->getUri()] = $route;
         }
+
     }
 
     public function dispatch(string $uri, string $method): void
@@ -44,7 +47,6 @@ class Router implements RouterInterface
         if (!$route) {
             $this->notFound();
         }
-
 
         if (is_array($route->getAction())) {
             [$controller, $action] = $route->getAction();
@@ -58,6 +60,7 @@ class Router implements RouterInterface
             call_user_func([$controller, 'setRedirect'], $this->redirect);
             call_user_func([$controller, 'setSession'], $this->session);
             call_user_func([$controller, 'setDatabase'], $this->database);
+            call_user_func([$controller, 'setAuth'], $this->auth);
 
             call_user_func([$controller, $action]);
         } else {

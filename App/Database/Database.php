@@ -19,9 +19,34 @@ class Database implements DatabaseInterface
 
     public function insert(string $table, array $data): int|false
     {
-        // TODO: Implement insert() method.
-    }
+        $fields = array_keys($data);
+        $columns = implode(', ', $fields);
+        $binds = implode(', ', array_map(fn ($field) => ":$field", $fields));
+        $sql = "INSERT INTO $table ($columns) VALUES ($binds)";
+        $stmn = $this->pdo->prepare($sql);
+        try {
+            $stmn->execute($data);
 
+        } catch (\PDOException $exception) {
+            return false;
+        }
+        return (int) $this->pdo->lastInsertId();
+    }
+    public function first(string $table, array $conditions = []): ?array
+    {
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' .implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "SELECT * FROM $table $where LITIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(($conditions));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
     private function connect()
     {
         $driver = $this->config->get('database.driver');
@@ -42,4 +67,6 @@ class Database implements DatabaseInterface
             exit("Database connection failed: {$exception->getMessage()}");
         }
     }
+
+
 }

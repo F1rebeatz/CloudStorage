@@ -32,6 +32,7 @@ class Route
      */
     public function getAction():mixed
     {
+
         return $this->action;
     }
     public function getMethod():string {

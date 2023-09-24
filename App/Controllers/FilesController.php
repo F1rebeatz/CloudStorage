@@ -9,8 +9,7 @@ class FilesController extends Controller
 {
     public function index(): void
     {
-        header('Location: /files/list');
-        $this->view('files');
+       $this->redirect('files/list');
 
     }
 
