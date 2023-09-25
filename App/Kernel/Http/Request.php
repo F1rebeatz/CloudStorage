@@ -2,6 +2,8 @@
 
 namespace App\Kernel\Http;
 
+use App\Kernel\Upload\UploadedFile;
+use App\Kernel\Upload\UploadedFileInterface;
 use App\Kernel\Validator\Validator;
 use App\Kernel\Validator\ValidatorInterface;
 
@@ -39,6 +41,20 @@ class Request implements RequestInterface
         return $this->post[$key] ?? $this->get[$key] ?? $default;
     }
 
+    public function file(string $key): ?UploadedFileInterface
+    {
+        if (!isset($this->files[$key])) {
+            return null;
+        }
+        return new UploadedFile(
+            $this->files[$key]['name'],
+            $this->files[$key]['type'],
+            $this->files[$key]['tmp_name'],
+            $this->files[$key]['error'],
+            $this->files[$key]['size'],
+        );
+    }
+
     /**
      * @param ValidatorInterface $validator
      */
@@ -49,16 +65,15 @@ class Request implements RequestInterface
 
     public function validate(array $rules): bool
     {
-
-
         $data = [];
         foreach ($rules as $field => $rule) {
             $data[$field] = $this->input($field);
         }
         return $this->validator->validate($data, $rules);
     }
-    public function errors():array {
+
+    public function errors(): array
+    {
         return $this->validator->errors();
     }
-
 }
