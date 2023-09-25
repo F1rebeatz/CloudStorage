@@ -1,13 +1,13 @@
 <?php
 
+use App\Controllers\AdminController;
 use App\Controllers\FilesController;
 use App\Controllers\HomeControllers;
-use App\Controllers\RegisterController;
-use App\Kernel\Router\Route;
 use App\Controllers\LoginController;
+use App\Controllers\RegisterController;
 use App\Middleware\AuthMiddleware;
-use App\Controllers\AdminController;
 use App\Middleware\GuestMiddleware;
+use Kernel\Router\Route;
 
 return [
     Route::get('/home', [HomeControllers::class, 'index']),

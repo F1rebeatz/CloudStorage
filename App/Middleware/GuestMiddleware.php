@@ -2,7 +2,7 @@
 
 namespace App\Middleware;
 
-class GuestMiddleware extends \App\Kernel\Middleware\AbstractMiddleware
+class GuestMiddleware extends \Kernel\Middleware\AbstractMiddleware
 {
 
     public function handle(): void

@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Kernel\Controller\Controller;
-use App\Kernel\Validator\Validator;
+use Kernel\Controller\Controller;
 
 class FilesController extends Controller
 {

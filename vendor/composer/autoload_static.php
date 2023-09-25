@@ -18,6 +18,10 @@ class ComposerStaticInita62b387a34b4ffab47273f4b355a1d76
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\VarDumper\\' => 28,
         ),
+        'K' => 
+        array (
+            'Kernel\\' => 7,
+        ),
         'D' => 
         array (
             'Database\\Seeders\\' => 17,
@@ -37,6 +41,10 @@ class ComposerStaticInita62b387a34b4ffab47273f4b355a1d76
         'Symfony\\Component\\VarDumper\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
+        ),
+        'Kernel\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Kernel',
         ),
         'Database\\Seeders\\' => 
         array (

@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Kernel\Controller\Controller;
-use App\Kernel\View\View;
+use Kernel\Controller\Controller;
 
 class HomeControllers extends Controller
 {

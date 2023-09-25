@@ -2,7 +2,7 @@
 
 namespace App\Middleware;
 
-use App\Kernel\Middleware\AbstractMiddleware;
+use Kernel\Middleware\AbstractMiddleware;
 
 class AuthMiddleware extends AbstractMiddleware
 {

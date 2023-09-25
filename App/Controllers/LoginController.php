@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Controllers;
-use App\Kernel\Controller\Controller;
-use App\Kernel\Http\Redirect;
+use Kernel\Controller\Controller;
 
 class LoginController extends Controller
 {
