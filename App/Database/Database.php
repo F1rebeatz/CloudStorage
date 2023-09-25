@@ -40,7 +40,7 @@ class Database implements DatabaseInterface
             $where = 'WHERE ' .implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
-        $sql = "SELECT * FROM $table $where LITIT 1";
+        $sql = "SELECT * FROM $table $where LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(($conditions));

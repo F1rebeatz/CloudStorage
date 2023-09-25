@@ -49,6 +49,8 @@ class Request implements RequestInterface
 
     public function validate(array $rules): bool
     {
+
+
         $data = [];
         foreach ($rules as $field => $rule) {
             $data[$field] = $this->input($field);

@@ -23,5 +23,6 @@ class RegisterController extends Controller
             'email' => $this->request()->input('email'),
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT),
         ]);
+        $this->redirect('/files/list');
     }
 }

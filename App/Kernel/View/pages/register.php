@@ -9,7 +9,7 @@
 <form action="/register" method="post">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
         <?php if ($session->has('email')) { ?>
             <ul class="list-group list-group-flush">
                 <?php foreach ($session->getFlash('email') as $error) { ?>
@@ -21,7 +21,7 @@
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
         <?php if ($session->has('password')) { ?>
             <ul class="list-group list-group-flush">
                 <?php foreach ($session->getFlash('password') as $error) { ?>

@@ -5,18 +5,23 @@ use App\Controllers\HomeControllers;
 use App\Controllers\RegisterController;
 use App\Kernel\Router\Route;
 use App\Controllers\LoginController;
+use App\Middleware\AuthMiddleware;
+use App\Controllers\AdminController;
+use App\Middleware\GuestMiddleware;
 
 return [
     Route::get('/home', [HomeControllers::class, 'index']),
-    Route::get('/files/list', [FilesController::class, 'list']),
+    Route::get('/files/list', [FilesController::class, 'list'], [AuthMiddleware::class]),
     Route::post('/files/list', [FilesController::class, 'store']),
-    Route::get('/register', [RegisterController::class, 'index']),
+    Route::get('/files/get/{id}', [FilesController::class, 'show']),
+    Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),
-    Route::get('/login', [LoginController::class, 'index']),
+    Route::get('/login', [LoginController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/login', [LoginController::class, 'login']),
     Route::post('/logout', [LoginController::class, 'logout']),
+    Route::get('/admin/users/list', [AdminController::class, 'index'], [AuthMiddleware::class])
 
-    Route::get('/files/get/{id}', [FilesController::class, 'show']),
+
 //    Route::put('/files/rename/{id}', [FilesController::class, 'rename']),
 //    Route::delete('/files/remove/{id}', [FilesController::class, 'remove']),
 //    Route::post('/directories/add', [FilesController::class, 'addDirectories']),
