@@ -8,6 +8,7 @@ class User
         private int $id,
         private string $email,
         private string $password,
+        private string $name
     ) {
 
     }
@@ -21,5 +22,13 @@ class User
 
     public function password():string {
         return $this->password;
+    }
+
+    /**
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
     }
 }

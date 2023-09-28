@@ -7,6 +7,7 @@ use Kernel\Http\RedirectInterface;
 use Kernel\Http\RequestInterface;
 use Kernel\Middleware\AbstractMiddleware;
 use Kernel\Session\SessionInterface;
+use Kernel\Storage\StorageInterface;
 use Kernel\View\ViewInterface;
 
 class Router implements RouterInterface
@@ -23,6 +24,7 @@ class Router implements RouterInterface
         private SessionInterface $session,
         private DatabaseInterface $database,
         private AuthInterface $auth,
+        private StorageInterface $storage
     )
     {
         $this->initRoutes();
@@ -40,6 +42,7 @@ class Router implements RouterInterface
     public function dispatch(string $uri, string $method): void
     {
         $route = $this->findRoute($uri, $method);
+
         if (!$route) {
             $this->notFound();
         }
@@ -66,7 +69,7 @@ class Router implements RouterInterface
             call_user_func([$controller, 'setSession'], $this->session);
             call_user_func([$controller, 'setDatabase'], $this->database);
             call_user_func([$controller, 'setAuth'], $this->auth);
-
+            call_user_func([$controller, 'setStorage'], $this->storage);
             call_user_func([$controller, $action]);
         } else {
             $route->getAction()();

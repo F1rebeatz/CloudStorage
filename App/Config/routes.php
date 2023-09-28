@@ -10,6 +10,7 @@ use App\Middleware\GuestMiddleware;
 use Kernel\Router\Route;
 
 return [
+    Route::get('/', [HomeControllers::class, 'index']),
     Route::get('/home', [HomeControllers::class, 'index']),
     Route::get('/files/list', [FilesController::class, 'list'], [AuthMiddleware::class]),
     Route::post('/files/list', [FilesController::class, 'store']),
@@ -20,6 +21,7 @@ return [
     Route::post('/login', [LoginController::class, 'login']),
     Route::post('/logout', [LoginController::class, 'logout']),
     Route::get('/admin/users/list', [AdminController::class, 'index'], [AuthMiddleware::class])
+
 
 
 //    Route::put('/files/rename/{id}', [FilesController::class, 'rename']),

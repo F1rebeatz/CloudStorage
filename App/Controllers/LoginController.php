@@ -10,11 +10,15 @@ class LoginController extends Controller
     }
 
     public function login() {
+
         $email = $this->request()->input('email');
         $password = $this->request()->input('password');
 
-        $this->auth()->attempt($email, $password);
-        return $this->redirect('/files/list');
+        if ($this->auth()->attempt($email, $password)) {
+            return $this->redirect('/files/list');
+        }
+        $this->session()->set('error', 'Invalid username or password');
+        $this->redirect('/login');
     }
 
     public function logout() {

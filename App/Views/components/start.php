@@ -5,7 +5,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>CloudStorage</title>

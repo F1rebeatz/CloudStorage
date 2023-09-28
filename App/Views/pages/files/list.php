@@ -2,7 +2,6 @@
 /** @var \Kernel\View\View $view
  * @var \Kernel\Session\Session $session
  */
-
 ?>
 
 <?php $view->component('start') ?>

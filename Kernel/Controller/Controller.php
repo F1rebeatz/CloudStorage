@@ -8,6 +8,7 @@ use Kernel\Http\RedirectInterface;
 use Kernel\Http\RequestInterface;
 use Kernel\Session\Session;
 use Kernel\Session\SessionInterface;
+use Kernel\Storage\StorageInterface;
 use Kernel\View\ViewInterface;
 
 abstract class Controller
@@ -18,6 +19,7 @@ abstract class Controller
     private SessionInterface $session;
     private DatabaseInterface $database;
     private AuthInterface $auth;
+    private StorageInterface $storage;
 
     public function view(string $name): void
     {
@@ -96,5 +98,21 @@ abstract class Controller
     public function setAuth(AuthInterface $auth): void
     {
         $this->auth = $auth;
+    }
+
+    /**
+     * @return StorageInterface
+     */
+    public function storage(): StorageInterface
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @param StorageInterface $storage
+     */
+    public function setStorage(StorageInterface $storage): void
+    {
+        $this->storage = $storage;
     }
 }

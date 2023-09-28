@@ -8,7 +8,7 @@ $user = $auth->user();
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">CloudStorage</a>
+                <a class="navbar-brand" href="/home">CloudStorage</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -16,18 +16,24 @@ $user = $auth->user();
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/home">Home</a>
                         </li>
                     </ul>
                 </div>
                 <?php if ($auth->check()) { ?>
                     <div class="d-flex">
-                        <h3 class="px-2">User: <?php echo $user->email() ?? 'email' ?></h3>
-                        <form action="../../../public/index.php" method="post">
+                        <h3 class="px-2">User: <?php echo $user->name() ?? 'email' ?></h3>
+                        <form action="/logout" method="post">
                             <button type="submit" class="btn btn-outline-primary">Logout</button>
                         </form>
                     </div>
-                <?php } ?>
+                <?php } else {?>
+                    <div class="d-flex">
+                        <form action="/login" method="post">
+                            <button type="submit" class="btn btn-outline-primary">Login</button>
+                        </form>
+                    </div>
+                <?php }?>
             </div>
         </nav>
     </div>

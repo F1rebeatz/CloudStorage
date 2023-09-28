@@ -3,5 +3,12 @@
 ?>
 
 <?php $view->component('start') ?>
-<h1>CloudStorage</h1>
+    <div>
+
+    </div>
+    <div class="mx-auto mt-3">
+        <h1 class="text-center">CloudStorage</h1>
+        <p class="text-center">Simple file storage</p>
+    </div>
+
 <?php $view->component('end') ?>

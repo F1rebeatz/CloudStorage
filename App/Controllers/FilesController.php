@@ -30,4 +30,5 @@ class FilesController extends Controller
             $this->redirect('/files/list');
         }
     }
+
 }
