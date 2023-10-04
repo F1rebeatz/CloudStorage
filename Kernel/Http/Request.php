@@ -32,12 +32,23 @@ class Request implements RequestInterface
 
     public function method(): string
     {
+        $method = $this->input('_method');
+
+        if (!empty($method) && in_array(strtoupper($method), ['PUT', 'DELETE'])) {
+            return strtoupper($method);
+        }
+
         return $this->server['REQUEST_METHOD'];
     }
 
     public function input($key, $default = null): mixed
     {
         return $this->post[$key] ?? $this->get[$key] ?? $default;
+    }
+
+    public function query($key, $default = null): mixed
+    {
+        return $this->get[$key] ?? $default;
     }
 
     public function file(string $key): ?UploadedFileInterface
@@ -65,14 +76,31 @@ class Request implements RequestInterface
     public function validate(array $rules): bool
     {
         $data = [];
+
         foreach ($rules as $field => $rule) {
-            $data[$field] = $this->input($field);
+
+            if ($this->hasFile($field)) {
+                $data[$field] = $this->file($field);
+                $data["{$field}_size"] = $this->file($field)->size();
+            } else {
+                $data[$field] = $this->input($field);
+            }
         }
+
         return $this->validator->validate($data, $rules);
+
     }
+
 
     public function errors(): array
     {
         return $this->validator->errors();
     }
+
+    private function hasFile(int|string $field): bool
+    {
+        return isset($this->files[$field]);
+    }
+
+
 }

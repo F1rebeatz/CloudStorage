@@ -23,6 +23,12 @@ class Route
     public static function post(string $uri, $action,  array $middlewares = []):static{
         return new static($uri, 'POST', $action, $middlewares);
     }
+    public static function put(string $uri, $action,  array $middlewares = []):static{
+        return new static($uri, 'PUT', $action, $middlewares);
+    }
+    public static function delete(string $uri, $action,  array $middlewares = []):static{
+        return new static($uri, 'DELETE', $action, $middlewares);
+    }
 
     function getUri(): string
     {

@@ -27,13 +27,9 @@ $user = $auth->user();
                             <button type="submit" class="btn btn-outline-primary">Logout</button>
                         </form>
                     </div>
-                <?php } else {?>
-                    <div class="d-flex">
-                        <form action="/login" method="post">
-                            <button type="submit" class="btn btn-outline-primary">Login</button>
-                        </form>
-                    </div>
-                <?php }?>
+                <?php } else { ?>
+                    <a href="/login" class="btn btn-outline-primary">Login</a>
+                <?php } ?>
             </div>
         </nav>
     </div>

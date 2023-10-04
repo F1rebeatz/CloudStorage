@@ -56,36 +56,36 @@ class Auth implements AuthInterface
         ]);
 
         if ($user) {
-            return new User(
+           return new User(
                 $user['id'],
-                $user['name'],
                 $user[$this->username()],
                 $user[$this->password()],
+                $user['name'],
             );
         }
         return null;
     }
 
-        public function username(): string
-        {
-            return $this->config->get('auth.username', 'email');
-        }
-
-        public
-        function password(): string
-        {
-            return $this->config->get('auth.password', 'password');
-        }
-
-        public
-        function table(): string
-        {
-            return $this->config->get('auth.table', 'users');
-        }
-
-        public
-        function session_field(): string
-        {
-            return $this->config->get('auth.session_field', 'user_id');
-        }
+    public function username(): string
+    {
+        return $this->config->get('auth.username', 'email');
     }
+
+    public
+    function password(): string
+    {
+        return $this->config->get('auth.password', 'password');
+    }
+
+    public
+    function table(): string
+    {
+        return $this->config->get('auth.table', 'users');
+    }
+
+    public
+    function session_field(): string
+    {
+        return $this->config->get('auth.session_field', 'user_id');
+    }
+}

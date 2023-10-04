@@ -7,7 +7,7 @@
   },
   "require": {
     "ext-pdo": "*",
-    "twbs/bootstrap": "5.0.0",
+    "twbs/bootstrap": "5.0.2",
     "php": "^8.1"
   },
   "require-dev": {

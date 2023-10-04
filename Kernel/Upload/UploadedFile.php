@@ -43,4 +43,20 @@ class UploadedFile implements UploadedFileInterface
     {
         return pathinfo($this->name, PATHINFO_EXTENSION);
     }
+
+    /**
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+    public function size(): string {
+        return $this->size;
+    }
+
+    public function error()
+    {
+        return $this->error;
+    }
 }

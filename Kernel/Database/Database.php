@@ -20,7 +20,7 @@ class Database implements DatabaseInterface
     {
         $fields = array_keys($data);
         $columns = implode(', ', $fields);
-        $binds = implode(', ', array_map(fn ($field) => ":$field", $fields));
+        $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
         $sql = "INSERT INTO $table ($columns) VALUES ($binds)";
         $stmn = $this->pdo->prepare($sql);
         try {
@@ -29,14 +29,15 @@ class Database implements DatabaseInterface
         } catch (\PDOException $exception) {
             return false;
         }
-        return (int) $this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId();
     }
+
     public function first(string $table, array $conditions = []): ?array
     {
         $where = '';
 
         if (count($conditions) > 0) {
-            $where = 'WHERE ' .implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "SELECT * FROM $table $where LIMIT 1";
@@ -46,6 +47,7 @@ class Database implements DatabaseInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+
     private function connect()
     {
         $driver = $this->config->get('database.driver');
@@ -67,5 +69,38 @@ class Database implements DatabaseInterface
         }
     }
 
+    public function get(string $table, array $conditions = []): array
+    {
+        $where = '';
 
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "SELECT * FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(($conditions));
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function delete(string $table, array $conditions = []): void
+    {
+        $where = '';
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        }
+        $sql = "DELETE FROM $table $where";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($conditions);
+    }
+
+    public function update(string $table, int $id, array $data): void {
+        $fields = array_keys($data);
+        $columns = implode(', ', $fields);
+        $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
+        $sql = "UPDATE $table SET $columns WHERE id = $id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($data);
+    }
 }

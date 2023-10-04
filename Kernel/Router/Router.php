@@ -14,7 +14,9 @@ class Router implements RouterInterface
 {
     private array $routes = [
         'GET' => [],
-        'POST' => []
+        'POST' => [],
+        'PUT' => [],
+        'DELETE' => []
     ];
 
     public function __construct(
@@ -41,6 +43,7 @@ class Router implements RouterInterface
 
     public function dispatch(string $uri, string $method): void
     {
+
         $route = $this->findRoute($uri, $method);
 
         if (!$route) {

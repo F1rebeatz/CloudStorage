@@ -2,6 +2,9 @@
 
 namespace Kernel\Validator;
 
+use Kernel\Upload\UploadedFile;
+use Kernel\Upload\UploadedFileInterface;
+
 class Validator implements ValidatorInterface
 {
     private array $errors = [];
@@ -27,9 +30,9 @@ class Validator implements ValidatorInterface
                 if ($error) {
                     $this->errors[$key][] = $error;
                 }
+
             }
         }
-
         return empty($this->errors);
     }
 
@@ -44,7 +47,9 @@ class Validator implements ValidatorInterface
 
         switch ($ruleName) {
             case 'required':
-                if (empty($value)) {
+                if ($value instanceof UploadedFile && $value->name() === '') {
+                    return "Field $key is required";
+                } else if (empty($value)) {
                     return "Field $key is required";
                 }
                 break;
@@ -69,6 +74,11 @@ class Validator implements ValidatorInterface
                     return "Field $key must be confirmed";
                 }
                 break;
+
+            case 'size':
+                if ($value->size() > $ruleValue) {
+                    return "Field $key must be less than $ruleValue bytes";
+                }
         }
 
         return false;
