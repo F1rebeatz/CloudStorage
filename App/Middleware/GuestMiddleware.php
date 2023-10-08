@@ -8,7 +8,7 @@ class GuestMiddleware extends \Kernel\Middleware\AbstractMiddleware
     public function handle(): void
     {
         if ($this->auth->check()) {
-            $this->redirect->to('/files/list');
+            $this->redirect->to('/home');
         }
     }
 }

@@ -19,14 +19,18 @@ class Database implements DatabaseInterface
     public function insert(string $table, array $data): int|false
     {
         $fields = array_keys($data);
+
         $columns = implode(', ', $fields);
         $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
+
         $sql = "INSERT INTO $table ($columns) VALUES ($binds)";
+
         $stmn = $this->pdo->prepare($sql);
         try {
             $stmn->execute($data);
 
         } catch (\PDOException $exception) {
+            dd($exception);
             return false;
         }
         return (int)$this->pdo->lastInsertId();
@@ -35,18 +39,32 @@ class Database implements DatabaseInterface
     public function first(string $table, array $conditions = []): ?array
     {
         $where = '';
+        $params = [];
 
-        if (count($conditions) > 0) {
-            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        foreach ($conditions as $field => $value) {
+            if ($value === null) {
+                $whereConditions[] = "$field IS NULL";
+            } else {
+                $whereConditions[] = "$field = :$field";
+                $params[":$field"] = $value;
+            }
+        }
+
+        if (!empty($whereConditions)) {
+            $where = 'WHERE ' . implode(' AND ', $whereConditions);
         }
 
         $sql = "SELECT * FROM $table $where LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(($conditions));
+        $stmt->execute($params);
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
         return $result ?: null;
     }
+
+
 
     private function connect()
     {
@@ -95,7 +113,8 @@ class Database implements DatabaseInterface
         $stmt->execute($conditions);
     }
 
-    public function update(string $table, int $id, array $data): void {
+    public function update(string $table, int $id, array $data): void
+    {
         $fields = array_keys($data);
         $columns = implode(', ', $fields);
         $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
@@ -103,4 +122,5 @@ class Database implements DatabaseInterface
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($data);
     }
+
 }

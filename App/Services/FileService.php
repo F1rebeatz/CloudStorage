@@ -8,24 +8,19 @@ use Kernel\Database\DatabaseInterface;
 
 class FileService
 {
-    private DatabaseInterface $db;
-
-    public function __construct()
-    {
-    }
-
-    public function setDatabase(DatabaseInterface $db):void {
-        $this->db = $db;
-    }
 
     /**
      * @param int $directoryInt
      * @return array<FileModel>
      */
-    public function getFilesInDirectory(int $directoryInt): array
+    public static function getFilesInDirectory(DatabaseInterface $db, ?int $directoryInt): array
     {
+        if ($directoryInt === null) {
+            return [];
+        }
+
         $conditions = ['directory_id' => $directoryInt];
-        $files = $this->db->get('files', $conditions);
+        $files = $db->get('files', $conditions);
 
         return array_map(function ($file) {
             return new FileModel(
@@ -38,36 +33,37 @@ class FileService
         }, $files);
     }
 
-    public function createFile(array $data): bool
+
+    public static function createFile(DatabaseInterface $db, $data): bool
     {
         try {
-            return $this->db->insert('files', $data);
+            return $db->insert('files', $data);
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function updateFile(int $fileId, array $data): bool
+    public static function updateFile(DatabaseInterface $db, int $fileId, array $data): bool
     {
         try {
-            $this->db->update('files', $fileId, $data);
+            $db->update('files', $fileId, $data);
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function deleteFile(int $fileId): bool
+    public static function deleteFile(DatabaseInterface $db, int $fileId): bool
     {
         try {
-            $this->db->delete('files', ['id' => $fileId]);
+            $db->delete('files', ['id' => $fileId]);
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function findFile(int $fileId): ?FileModel
+    public static function findFile(DatabaseInterface $db, int $fileId): ?FileModel
     {
-        $file = $this->db->first('files', ['id' => $fileId]);
+        $file = $db->first('files', ['id' => $fileId]);
 
         if (!$file) {
             return null;

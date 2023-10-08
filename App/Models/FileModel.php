@@ -6,27 +6,35 @@ class FileModel
 {
     public function __construct(
         private int    $id,
-        private string $user_id,
-        private string $directory_id,
+        private int    $user_id,
+        private ?int   $directory_id,
         private string $filename,
-        private string $filepath,
-    )
-    {
-
+        private string $filepath
+    ) {
     }
-    public function id(): int {
+
+    public function getId(): int
+    {
         return $this->id;
     }
-    public function user_id(): string {
+
+    public function getUserId(): int
+    {
         return $this->user_id;
     }
-    public function directory_id(): string {
+
+    public function getDirectoryId(): ?int
+    {
         return $this->directory_id;
     }
-    public function filename(): string {
+
+    public function getFilename(): string
+    {
         return $this->filename;
     }
-    public function filepath(): string {
+
+    public function getFilepath(): string
+    {
         return $this->filepath;
     }
 }

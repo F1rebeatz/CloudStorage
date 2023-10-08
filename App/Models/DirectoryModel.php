@@ -12,22 +12,22 @@ class DirectoryModel
     ) {
     }
 
-    public function id(): int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function userId(): int
+    public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    public function parentDirectoryId(): ?int
+    public function getParentDirectoryId(): ?int
     {
         return $this->parent_directory_id;
     }
 
-    public function directoryName(): string
+    public function getDirectoryName(): string
     {
         return $this->directory_name;
     }

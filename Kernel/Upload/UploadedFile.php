@@ -36,7 +36,7 @@ class UploadedFile implements UploadedFileInterface
 
     public function randomFileName(): string
     {
-        return md5(uniqid(rand(), true)) . $this->getExtension();
+        return md5(uniqid(rand(), true)) . ".{$this->getExtension()}";
     }
 
     public function getExtension(): string
@@ -51,11 +51,13 @@ class UploadedFile implements UploadedFileInterface
     {
         return $this->name;
     }
-    public function size(): string {
+
+    public function size(): string
+    {
         return $this->size;
     }
 
-    public function error()
+    public function error(): string
     {
         return $this->error;
     }

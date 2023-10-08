@@ -22,7 +22,7 @@
             <?php if ($session->has('error')) { ?>
                 <div class="alert alert-danger"><?php echo $session->getFlash('error') ?></div>
             <?php } ?>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Log in</button>
         </form>
     </div>
 </div>

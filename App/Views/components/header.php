@@ -24,11 +24,11 @@ $user = $auth->user();
                     <div class="d-flex">
                         <h3 class="px-2">User: <?php echo $user->name() ?? 'email' ?></h3>
                         <form action="/logout" method="post">
-                            <button type="submit" class="btn btn-outline-primary">Logout</button>
+                            <button type="submit" class="btn btn-outline-primary">Log Out</button>
                         </form>
                     </div>
                 <?php } else { ?>
-                    <a href="/login" class="btn btn-outline-primary">Login</a>
+                    <a href="/login" class="btn btn-outline-primary">Log In</a>
                 <?php } ?>
             </div>
         </nav>

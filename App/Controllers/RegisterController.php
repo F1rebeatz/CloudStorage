@@ -23,11 +23,23 @@ class RegisterController extends Controller
             }
             $this->redirect('/register');
         }
-       $this->db()->insert('users', [
+
+       $lastId = $this->db()->insert('users', [
             'name' => $this->request()->input('name'),
             'email' => $this->request()->input('email'),
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT),
         ]);
+
+        $this->db()->insert('directories', [
+            'user_id' => $lastId,
+            'parent_directory_id' => null,
+            'directory_name' => 'root',
+        ]);
+
+        if ($this->request()->input('check')) {
+            $this->session()->set('user_id', $lastId);
+            $this->redirect('/files/list');
+        }
 
         $this->redirect('/files/list');
     }
