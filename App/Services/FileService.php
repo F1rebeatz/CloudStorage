@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\FileModel;
 use Exception;
+use Kernel\Config\Config;
 use Kernel\Database\DatabaseInterface;
+use Kernel\Storage\Storage;
 
 class FileService
 {
@@ -43,10 +45,11 @@ class FileService
         }
     }
 
-    public static function updateFile(DatabaseInterface $db, int $fileId, array $data): bool
+    public static function updateFile(DatabaseInterface $db, array $data, array $conditions): bool
     {
         try {
-            $db->update('files', $fileId, $data);
+            $db->update('files', $data, $conditions);
+            return true;
         } catch (Exception $e) {
             return false;
         }
@@ -55,11 +58,35 @@ class FileService
     public static function deleteFile(DatabaseInterface $db, int $fileId): bool
     {
         try {
-            $db->delete('files', ['id' => $fileId]);
+
+            $file = $db->first('files', ['id' => $fileId]);
+
+            if (!$file) {
+                return false;
+            }
+            $file = new FileModel(
+                id: $file['id'],
+                user_id: $file['user_id'],
+                directory_id: $file['directory_id'],
+                filename: $file['file_name'],
+                filepath: $file['file_path']
+            );
+
+            $storage = new Storage(new Config());
+            $filePath = $file->getFilepath();
+            $fullFilePath = $storage->storagePath($filePath);
+
+            if (file_exists($fullFilePath) && unlink($fullFilePath)) {
+                $db->delete('files', ['id' => $fileId]);
+                return true;
+            }
+
+            return false;
         } catch (Exception $e) {
             return false;
         }
     }
+
 
     public static function findFile(DatabaseInterface $db, int $fileId): ?FileModel
     {
@@ -77,5 +104,6 @@ class FileService
             filepath: $file['file_path']
         );
     }
+
 }
 

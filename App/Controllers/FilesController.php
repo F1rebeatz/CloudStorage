@@ -13,15 +13,14 @@ class FilesController extends Controller
     public function index(): void
     {
         $user = $this->session()->get('user_id');
-        $currentDirectory = $this->getIdCurrentDirectory($user);
+        $currentDirectoryId = $this->getIdCurrentDirectory($user);
+        $files = $this->getFiles($currentDirectoryId);
 
-        $files = $this->getFiles($currentDirectory);
-        $subdirectories = $this->getDirectories($currentDirectory);
+        $subdirectories = $this->getDirectories($currentDirectoryId);
 
         $this->view('files/list', [
             'files' => $files,
             'subdirectories' => $subdirectories,
-            'directory' => $currentDirectory,
         ]);
     }
 
@@ -74,6 +73,103 @@ class FilesController extends Controller
                 'message' => 'Error creating file',
             ]);
         }
+    }
+
+    public function download(): void
+    {
+        $fileId = $this->request()->query('file');
+
+        $file = FileService::findFile($this->db(), $fileId);
+
+        if ($file) {
+            $filePath = $this->storage()->storagePath($file->getFilePath());
+
+            if (file_exists($filePath)) {
+                $extention = pathinfo($filePath, PATHINFO_EXTENSION);
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="' . basename($file->getFilename() . ".$extention") . '"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($filePath));
+
+                readfile($filePath);
+                exit;
+            } else {
+
+                $this->session()->set('error', 'File not found');
+                $this->redirect('/files/list');
+            }
+        } else {
+
+            $this->session()->set('error', 'File not found');
+            $this->redirect('/files/list');
+        }
+    }
+
+    public function delete(): void
+    {
+        $fileId = $this->request()->query('file');
+        if (FileService::deleteFile($this->db(), $fileId)) {
+            $this->redirect('/files/list');
+        }
+    }
+
+    public function edit(): void
+    {
+        $fileId = $this->request()->query('file');
+        $file = FileService::findFile($this->db(), $fileId);
+        $user = $this->session()->get('user_id');
+        if (!$file) {
+            $this->redirect('/files/list');
+            return;
+        }
+        $currentDirectoryId = $file->getDirectoryId();
+
+        $subdirectories = $this->getDirectories($currentDirectoryId);
+        $this->view('files/edit', ['file' => $file, 'subdirectories' => $subdirectories, 'directoryId' => $currentDirectoryId]);
+    }
+
+    public function update(): void
+    {
+        $fileId = $this->request()->input('fileId');
+        $file = FileService::findFile($this->db(), $fileId);
+        $user = $this->session()->get('user_id');
+
+        if (!$file) {
+            $this->redirect('/files/list');
+            return;
+        }
+
+        $newTitle = $this->request()->input('title');
+        $newDirectoryId = intval($this->request()->input('directory'));
+
+        $validation = $this->request()->validate([
+            'title' => ['required', 'max:255', 'min:3'],
+        ]);
+
+        if (!$validation) {
+            foreach ($this->request()->errors() as $field => $errors) {
+                $this->session()->set($field, $errors);
+            }
+            $this->redirect('/files/edit');
+            return;
+        }
+
+        $success = FileService::updateFile($this->db(), [
+            'user_id' => $user,
+            'directory_id' => $newDirectoryId,
+            'file_name' => $newTitle,
+        ], ['id' => $fileId]);
+
+        if ($success) {
+            $this->session()->set('success', 'File updated successfully.');
+        } else {
+            $this->session()->set('error', 'File update failed.');
+        }
+
+        $this->redirect('/files/list');
     }
 
     private function getDirectories(?int $directoryId): array
