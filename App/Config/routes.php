@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AdminController;
+use App\Controllers\DirectoryController;
 use App\Controllers\FilesController;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
@@ -19,6 +20,9 @@ return [
     Route::delete('/files/remove/', [FilesController::class, 'delete']),
     Route::get('/files/edit/', [FilesController::class, 'edit']),
     Route::post('/files/edit/', [FilesController::class, 'update']),
+
+    Route::get('/directories/add', [DirectoryController::class, 'add']),
+    Route::post('/directories/add', [DirectoryController::class, 'create']),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),

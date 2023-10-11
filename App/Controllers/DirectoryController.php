@@ -2,25 +2,26 @@
 
 namespace App\Controllers;
 
+use App\Services\DirectoryService;
 use Kernel\Controller\Controller;
 
 class DirectoryController extends Controller
 {
-    private DirectoryService $directoryService;
 
-    public function __construct(DirectoryService $directoryService)
-    {
-        $this->directoryService = $directoryService;
-    }
+  public function add() {
+    $this->view('directories/add');
+  }
+
 
     public function create() {
-        $directoryName = $this->request()->input('name');
-        $createdDirectory = $this->directoryService->createDirectory(['name' => $directoryName]);
+        $directoryName = $this->request()->input('directory_name');
+        $currenDirectory =
+        $createdDirectory = DirectoryService::createDirectory($this->db(), ['directory_name' => $directoryName]);
 
         if ($createdDirectory) {
-            $this->redirect("/directories/get{$createdDirectory}");
+            $this->redirect("/directories/get?directory={$createdDirectory}");
         } else {
-             $this->redirect('/directories');
+             $this->redirect('/files/list');
         }
     }
     public function read($directoryId) {

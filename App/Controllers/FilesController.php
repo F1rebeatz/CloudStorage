@@ -67,11 +67,10 @@ class FilesController extends Controller
         ];
 
         if (FileService::createFile($this->db(), $fileData)) {
+            $this->session()->set('success', 'File added successfully.');
             $this->redirect('/files/list');
         } else {
-            $this->view('error', [
-                'message' => 'Error creating file',
-            ]);
+            $this->session()->set('error', 'File add failed.');
         }
     }
 
@@ -130,6 +129,7 @@ class FilesController extends Controller
         $subdirectories = $this->getDirectories($currentDirectoryId);
         $this->view('files/edit', ['file' => $file, 'subdirectories' => $subdirectories, 'directoryId' => $currentDirectoryId]);
     }
+
 
     public function update(): void
     {

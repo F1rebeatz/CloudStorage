@@ -22,7 +22,7 @@ $user = $auth->user();
                 </div>
                 <?php if ($auth->check()) { ?>
                     <div class="d-flex">
-                        <h3 class="px-2">User: <?php echo $user->name() ?? 'email' ?></h3>
+                        <h3 class="px-2"><?php echo $user->name() ?? 'email' ?></h3>
                         <form action="/logout" method="post">
                             <button type="submit" class="btn btn-outline-primary">Log Out</button>
                         </form>
