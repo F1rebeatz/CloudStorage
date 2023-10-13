@@ -8,6 +8,7 @@ class Route
     private string $method;
     private $action;
     private array $middlewares = [];
+    private array $parameters = [];
 
     public function __construct(string $uri, string $method, mixed $action, array $middlewares)
     {
@@ -15,6 +16,7 @@ class Route
         $this->method = $method;
         $this->action = $action;
         $this->middlewares = $middlewares;
+        $this->extractParameters();
     }
 
     public static function get(string $uri, $action, array $middlewares = []):static{
@@ -52,5 +54,20 @@ class Route
     }
     public function hasMiddlewares():bool {
         return !empty($this->middlewares);
+    }
+
+    private function extractParameters(): void
+    {
+        preg_match_all('/{(\w+)}/', $this->uri, $matches);
+        $this->parameters = $matches[1];
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+    public function setParameters(array $parameters): void
+    {
+        $this->parameters = $parameters;
     }
 }

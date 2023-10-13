@@ -73,7 +73,7 @@ class Router implements RouterInterface
             call_user_func([$controller, 'setDatabase'], $this->database);
             call_user_func([$controller, 'setAuth'], $this->auth);
             call_user_func([$controller, 'setStorage'], $this->storage);
-            call_user_func([$controller, $action]);
+            call_user_func_array([$controller, $action], $route->getParameters());
         } else {
             $route->getAction()();
         }
@@ -88,12 +88,52 @@ class Router implements RouterInterface
 
     private function findRoute(string $uri, string $method): Route|false
     {
-        if (!isset($this->routes[$method][$uri])) {
+        if (!isset($this->routes[$method])) {
             return false;
         }
-        return $this->routes[$method][$uri];
+
+        // Сначала ищем маршруты с точным совпадением URI
+        if (isset($this->routes[$method][$uri])) {
+            return $this->routes[$method][$uri];
+        }
+
+        foreach ($this->routes[$method] as $route) {
+            $routeUri = $route->getUri();
+            $routeParts = explode('/', $routeUri);
+            $uriParts = explode('/', $uri);
+
+            if (count($routeParts) !== count($uriParts)) {
+                continue;
+            }
+
+            $parameters = $this->extractParameters($routeUri, $uri);
+
+            if (!empty($parameters)) {
+                $route->setParameters($parameters);
+                return $route;
+            }
+        }
+
+        return false;
     }
 
+
+    private function extractParameters(string $uriPattern, string $uri): array
+    {
+        $uriParts = explode('/', $uri);
+        $patternParts = explode('/', $uriPattern);
+
+        $parameters = [];
+
+        foreach ($patternParts as $i => $patternPart) {
+            if (strpos($patternPart, '{') === 0 && strpos($patternPart, '}') === strlen($patternPart) - 1) {
+                $paramName = trim($patternPart, '{}');
+                $parameters[$paramName] = $uriParts[$i];
+            }
+        }
+
+        return $parameters;
+    }
 
     /**
      * @return Route[]

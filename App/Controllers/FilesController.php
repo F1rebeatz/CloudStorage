@@ -115,10 +115,11 @@ class FilesController extends Controller
         }
     }
 
-    public function edit(): void
+    public function edit($id): void
     {
-        $fileId = $this->request()->query('file');
-        $file = FileService::findFile($this->db(), $fileId);
+
+//        $fileId = $this->request()->query('file');
+        $file = FileService::findFile($this->db(), $id);
         $user = $this->session()->get('user_id');
         if (!$file) {
             $this->redirect('/files/list');
