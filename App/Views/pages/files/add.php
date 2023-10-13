@@ -30,7 +30,7 @@
                     <?php
                     foreach ($subdirectories as $directory) { ?>
                         <option
-                            value="<?php echo $directory->id(); ?>"><?php echo $directory->directoryName();?></option>
+                            value="<?php echo $directory->getId(); ?>"><?= $directory->getDirectoryName(); ?></option>
                     <?php } ?>
                 </select>
             </div>

@@ -18,10 +18,11 @@ return [
     Route::post('/files/add', [FilesController::class, 'store']),
     Route::get('/files/get/', [FilesController::class, 'download']),
     Route::delete('/files/remove/', [FilesController::class, 'delete']),
-    Route::get('/files/edit/', [FilesController::class, 'edit']),
+    Route::get('/files/edit/{', [FilesController::class, 'edit']),
     Route::post('/files/edit/', [FilesController::class, 'update']),
 
     Route::get('/directories/add', [DirectoryController::class, 'add']),
+    Route::get('/directories/show', [DirectoryController::class, 'show']),
     Route::post('/directories/add', [DirectoryController::class, 'create']),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),

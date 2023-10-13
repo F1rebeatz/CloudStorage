@@ -2,9 +2,8 @@
 /** @var \Kernel\View\ViewInterface $view
  * @var \Kernel\Session\SessionInterface $session
  * @var \App\Models\DirectoryModel[] $subdirectories
- * @var int $directoryId
+ * @var int $directory
  */
-
 ?>
 <?php $view->component('start') ?>
 <div class="col-6">
@@ -17,6 +16,7 @@
         <?php if ($session->has('directory_name')) { ?>
             <div class="alert alert-danger"><?php echo $session->getFlash('directory_name')[0] ?></div>
         <?php } ?>
+        <input type="hidden" name="directory" value="<?= $directory ?>">
         <button class="btn btn-primary" type="submit">Create Directory</button>
     </form>
 </div>

@@ -8,34 +8,43 @@ use Kernel\Controller\Controller;
 class DirectoryController extends Controller
 {
 
-  public function add() {
-    $this->view('directories/add');
-  }
+    public function add()
+    {
+        $directory = intval($this->request()->query('directory'));
+        $this->view('directories/add', ['directory' => $directory]);
+    }
 
 
-    public function create() {
+    public function create()
+    {
         $directoryName = $this->request()->input('directory_name');
-        $currenDirectory =
-        $createdDirectory = DirectoryService::createDirectory($this->db(), ['directory_name' => $directoryName]);
+        $currentDirectory = intval($this->request()->input('directory'));
+        $user = $this->session()->get('user_id');
+        $createdDirectory = DirectoryService::createDirectory($this->db(), ['directory_name' => $directoryName,
+            'parent_directory_id' => $currentDirectory, 'user_id' => $user]);
 
         if ($createdDirectory) {
-            $this->redirect("/directories/get?directory={$createdDirectory}");
+            $this->redirect('/files/list');
         } else {
-             $this->redirect('/files/list');
+            $this->redirect('/files/list');
         }
     }
-    public function read($directoryId) {
-        $directory = $this->directoryService->find($directoryId);
+
+    public function show($directoryId)
+    {
+
+        $directory = DirectoryService::findDirectory($this->db(), $directoryId);
 
         if ($directory) {
-            $this->view('directories/list', ['directory' => $directory]);
+            $this->view('directories/show', ['directory' => $directory]);
         } else {
 
             $this->redirect("/directories/get{$directoryId}");
         }
     }
 
-    public function update($directoryId) {
+    public function update($directoryId)
+    {
         $newDirectoryName = $this->request()->input('name');
         $updatedDirectory = $this->directoryService->updateDirectory($directoryId, ['name' => $newDirectoryName]);
 
@@ -46,7 +55,8 @@ class DirectoryController extends Controller
         }
     }
 
-    public function delete($directoryId) {
+    public function delete($directoryId)
+    {
         $result = $this->directoryService->deleteDirectory($directoryId);
 
         if ($result) {
