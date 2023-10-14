@@ -3,11 +3,23 @@
 namespace App\Controllers;
 
 use App\Services\DirectoryService;
+use App\Services\FileService;
 use Kernel\Controller\Controller;
 
 class DirectoryController extends Controller
 {
+    public function index($id)
+    {
+        $directory = DirectoryService::findDirectory($this->db(), $id);
+        $subdirectories = DirectoryService::getSubdirectories($this->db(), $id);
+        $files = FileService::getFilesInDirectory($this->db(), $id);
 
+        if ($directory) {
+            $this->view('/directories/get', ['directory' => $directory, 'files' => $files, 'subdirectories' => $subdirectories]);
+        } else {
+            $this->redirect("files/list");
+        }
+    }
     public function add()
     {
         $directory = intval($this->request()->query('directory'));
@@ -30,18 +42,7 @@ class DirectoryController extends Controller
         }
     }
 
-    public function show($directoryId)
-    {
 
-        $directory = DirectoryService::findDirectory($this->db(), $directoryId);
-
-        if ($directory) {
-            $this->view('directories/show', ['directory' => $directory]);
-        } else {
-
-            $this->redirect("/directories/get{$directoryId}");
-        }
-    }
 
     public function update($directoryId)
     {
@@ -55,9 +56,10 @@ class DirectoryController extends Controller
         }
     }
 
-    public function delete($directoryId)
+    public function delete(int $id): void
     {
-        $result = $this->directoryService->deleteDirectory($directoryId);
+        dd($id);
+        $result = DirectoryService::deleteDirectory($this->db(),$directoryId);
 
         if ($result) {
             $this->redirect('/directories');

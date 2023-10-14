@@ -13,7 +13,9 @@ class FilesController extends Controller
     public function index(): void
     {
         $user = $this->session()->get('user_id');
+
         $currentDirectoryId = $this->getIdCurrentDirectory($user);
+
         $files = $this->getFiles($currentDirectoryId);
 
         $directories = $this->getDirectories($currentDirectoryId);
@@ -21,6 +23,7 @@ class FilesController extends Controller
         $this->view('files/list', [
             'files' => $files,
             'directories' => $directories,
+            'directoryId' => $currentDirectoryId,
         ]);
     }
 
@@ -55,8 +58,7 @@ class FilesController extends Controller
             return;
         }
 
-        $directoryId = $this->request()->query('directory') ?? $this->getRootDirectoryId($userId);
-
+        $directoryId = intval($this->request()->input('directory', $this->getRootDirectoryId($userId)));
         $filePath = $file->move('files');
 
         $fileData = [

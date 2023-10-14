@@ -23,8 +23,11 @@ return [
     Route::get('/files/edit/{id}', [FilesController::class, 'edit']),
 
     Route::get('/directories/add', [DirectoryController::class, 'add']),
-    Route::get('/directories/get', [DirectoryController::class, 'show']),
     Route::post('/directories/add', [DirectoryController::class, 'create']),
+    Route::get('/directories/get/{id}', [DirectoryController::class, 'index']),
+    Route::delete('/directories/remove/{id}', [DirectoryController::class, 'delete']),
+    Route::get('/directories/edit/{id}', [DirectoryController::class, 'edit']),
+
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),

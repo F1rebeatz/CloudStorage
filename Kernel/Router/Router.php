@@ -103,12 +103,17 @@ class Router implements RouterInterface
                 continue;
             }
 
+            // Проверяем совпадение первой части URI и маршрута
+            if ($routeParts[0] !== $uriParts[0]) {
+                continue;
+            }
+
             $parameters = $this->extractParameters($routeUri, $uri);
 
-            // Проверяем совпадение частей URI
+            // Проверяем совпадение остальных частей URI
             $matching = true;
-            foreach ($routeParts as $key => $part) {
-                if ($part !== $uriParts[$key] && !preg_match('/^{(\w+)}$/', $part)) {
+            for ($i = 1; $i < count($routeParts); $i++) {
+                if ($routeParts[$i] !== $uriParts[$i] && !preg_match('/^{(\w+)}$/', $routeParts[$i])) {
                     $matching = false;
                     break;
                 }
@@ -116,16 +121,12 @@ class Router implements RouterInterface
 
             if ($matching) {
                 $route->setParameters($parameters);
-                dd($route);
                 return $route;
             }
         }
 
         return false;
     }
-
-
-
 
 
 

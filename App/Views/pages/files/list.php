@@ -4,6 +4,7 @@
 /** @var \App\Models\FileModel[] $files */
 /** @var \App\Models\DirectoryModel[] $directories */
 /** @var $directoryId */
+
 ?>
 
 <?php $view->component('start') ?>
@@ -46,9 +47,9 @@
                             </g>
                         </svg><?= $directory->getDirectoryName() ?></div>
                     <div class="btn-group d-flex gap-2">
-                        <a href="/files/get/<?= $directory->getId() ?>" class="btn btn-sm btn-primary me-2">View</a>
+                        <a href="/directories/get/<?= $directory->getId() ?>" class="btn btn-sm btn-primary me-2">View</a>
 
-                        <form method="POST" action="/directories/delete/<?= $directory->getId() ?>">
+                        <form method="POST" action="/directories/remove/<?= $directory->getId() ?>">
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn btn-sm btn-danger" data-action="delete">Delete</button>
                         </form>
