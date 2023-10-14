@@ -32,7 +32,6 @@ class FilesController extends Controller
         $user = $this->session()->get('user_id');
         $directoryId = $this->getIdCurrentDirectory($user);
         $directories = $this->getDirectories($directoryId);
-
         $this->view('files/add', [
             'directories' => $directories,
             'directoryId' => $directoryId,
@@ -54,7 +53,14 @@ class FilesController extends Controller
             foreach ($this->request()->errors() as $field => $errors) {
                 $this->session()->set($field, $errors);
             }
-            $this->redirect('/files/add');
+
+            // Определяем, откуда был выполнен запрос
+            $directoryId = $this->request()->input('directory');
+            if ($directoryId) {
+                $this->redirect('/directories/get/' . $directoryId);
+            } else {
+                $this->redirect('/files/add');
+            }
             return;
         }
 
@@ -69,12 +75,21 @@ class FilesController extends Controller
         ];
 
         if (FileService::createFile($this->db(), $fileData)) {
-            $this->session()->set('success', 'File added successfully.');
-            $this->redirect('/files/list');
+            $this->session()->set('success', 'File added successfully');
+
+            // Определяем, откуда был выполнен запрос
+            $directoryId = $this->request()->input('directory');
+            if ($directoryId) {
+                $this->redirect('/directories/get/' . $directoryId);
+            } else {
+                $this->redirect('/files/list');
+            }
         } else {
-            $this->session()->set('error', 'File add failed.');
+            $this->session()->set('error', 'File add failed');
+            $this->redirect('/files/add');
         }
     }
+
 
     public function download(int $id): void
     {
@@ -109,10 +124,24 @@ class FilesController extends Controller
 
     public function delete(int $id): void
     {
-        if (FileService::deleteFile($this->db(), $id)) {
+        $file = FileService::findFile($this->db(), $id);
+
+        if ($file) {
+            $isInRootDirectory = $file->getDirectoryId() === null;
+
+            if (FileService::deleteFile($this->db(), $id)) {
+                if ($isInRootDirectory) {
+                    $this->redirect('/files/list');
+                } else {
+                    $this->redirect('/directories/get/' . $file->getDirectoryId());
+                }
+            }
+        } else {
+            $this->session()->set('error', 'File not found.');
             $this->redirect('/files/list');
         }
     }
+
 
     public function edit(int $id): void
     {
@@ -166,8 +195,13 @@ class FilesController extends Controller
             $this->session()->set('error', 'File update failed.');
         }
 
-        $this->redirect('/files/list');
+        if ($newDirectoryId === null) {
+            $this->redirect('/files/list');
+        } else {
+            $this->redirect('/directories/get/' . $newDirectoryId);
+        }
     }
+
 
     private function getDirectories(?int $directoryId): array
     {

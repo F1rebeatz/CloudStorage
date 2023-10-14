@@ -20,6 +20,7 @@ class DirectoryController extends Controller
             $this->redirect("files/list");
         }
     }
+
     public function add()
     {
         $directory = intval($this->request()->query('directory'));
@@ -43,7 +44,6 @@ class DirectoryController extends Controller
     }
 
 
-
     public function update($directoryId)
     {
         $newDirectoryName = $this->request()->input('name');
@@ -58,13 +58,22 @@ class DirectoryController extends Controller
 
     public function delete(int $id): void
     {
-        dd($id);
-        $result = DirectoryService::deleteDirectory($this->db(),$directoryId);
+        $directory = DirectoryService::findDirectory($this->db(), $id);
 
-        if ($result) {
-            $this->redirect('/directories');
+        if ($directory) {
+            $filesInDirectory = FileService::getFilesInDirectory($this->db(), $id);
+            foreach ($filesInDirectory as $file) {
+                FileService::deleteFile($this->db(), $file->getId());
+            }
+            if (DirectoryService::deleteDirectory($this->db(), $id)) {
+                $this->session()->set('success', 'Directory and its files deleted successfully.');
+            } else {
+                $this->session()->set('error', 'Failed to delete directory.');
+            }
         } else {
-            $this->redirect("/directories/get/{$directoryId}");
+            $this->session()->set('error', 'Directory not found.');
         }
+        $this->redirect('/files/list');
     }
+
 }

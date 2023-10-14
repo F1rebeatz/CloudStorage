@@ -9,8 +9,6 @@
 
 <?php $view->component('start') ?>
 <div class="container mt-4">
-    <h2>Your Files and Directories</h2>
-
     <!-- Display any success or error messages from the session -->
     <?php if ($session->has('success')): ?>
         <div class="alert alert-success">
@@ -28,7 +26,7 @@
 
         <!-- List of Directories -->
         <h3>Directories:</h3>
-        <ul class="list-group">
+        <ul class="list-group mb-4">
             <?php foreach ($directories as $directory): ?>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
