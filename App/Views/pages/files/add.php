@@ -1,7 +1,7 @@
 <?php
 /** @var \Kernel\View\ViewInterface $view
  * @var \Kernel\Session\SessionInterface $session
- * @var \App\Models\DirectoryModel $subdirectories
+ * @var \App\Models\DirectoryModel $directories
  * @var int $directoryId
  */
 
@@ -28,7 +28,7 @@
                 <select class="form-select" name="directory" id="directory">
                     <option value="<?= $directoryId; ?>">Current Directory</option>
                     <?php
-                    foreach ($subdirectories as $directory) { ?>
+                    foreach ($directories as $directory) { ?>
                         <option
                             value="<?php echo $directory->getId(); ?>"><?= $directory->getDirectoryName(); ?></option>
                     <?php } ?>

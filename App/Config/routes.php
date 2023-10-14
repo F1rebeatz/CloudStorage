@@ -17,13 +17,13 @@ return [
     Route::get('/files/list', [FilesController::class, 'index'], [AuthMiddleware::class]),
     Route::get('/files/add', [FilesController::class, 'add'], [AuthMiddleware::class]),
     Route::post('/files/add', [FilesController::class, 'store']),
-    Route::get('/files/get/', [FilesController::class, 'download']),
-    Route::delete('/files/remove/', [FilesController::class, 'delete']),
-
+    Route::get('/files/get/{id}', [FilesController::class, 'download']),
+    Route::delete('/files/remove/{id}', [FilesController::class, 'delete']),
     Route::post('/files/edit/', [FilesController::class, 'update']),
     Route::get('/files/edit/{id}', [FilesController::class, 'edit']),
+
     Route::get('/directories/add', [DirectoryController::class, 'add']),
-    Route::get('/directories/show', [DirectoryController::class, 'show']),
+    Route::get('/directories/get', [DirectoryController::class, 'show']),
     Route::post('/directories/add', [DirectoryController::class, 'create']),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),

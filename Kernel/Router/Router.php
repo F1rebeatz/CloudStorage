@@ -92,15 +92,12 @@ class Router implements RouterInterface
             return false;
         }
 
-        // Сначала ищем маршруты с точным совпадением URI
-        if (isset($this->routes[$method][$uri])) {
-            return $this->routes[$method][$uri];
-        }
+        // Разбиваем URI на части
+        $uriParts = explode('/', $uri);
 
         foreach ($this->routes[$method] as $route) {
             $routeUri = $route->getUri();
             $routeParts = explode('/', $routeUri);
-            $uriParts = explode('/', $uri);
 
             if (count($routeParts) !== count($uriParts)) {
                 continue;
@@ -108,14 +105,28 @@ class Router implements RouterInterface
 
             $parameters = $this->extractParameters($routeUri, $uri);
 
-            if (!empty($parameters)) {
+            // Проверяем совпадение частей URI
+            $matching = true;
+            foreach ($routeParts as $key => $part) {
+                if ($part !== $uriParts[$key] && !preg_match('/^{(\w+)}$/', $part)) {
+                    $matching = false;
+                    break;
+                }
+            }
+
+            if ($matching) {
                 $route->setParameters($parameters);
+                dd($route);
                 return $route;
             }
         }
 
         return false;
     }
+
+
+
+
 
 
     private function extractParameters(string $uriPattern, string $uri): array
@@ -128,12 +139,16 @@ class Router implements RouterInterface
         foreach ($patternParts as $i => $patternPart) {
             if (strpos($patternPart, '{') === 0 && strpos($patternPart, '}') === strlen($patternPart) - 1) {
                 $paramName = trim($patternPart, '{}');
-                $parameters[$paramName] = $uriParts[$i];
+                $paramValue = $uriParts[$i];
+
+                // Попробуем преобразовать в число, если возможно
+                $parameters[$paramName] = is_numeric($paramValue) ? intval($paramValue) : $paramValue;
             }
         }
 
         return $parameters;
     }
+
 
     /**
      * @return Route[]

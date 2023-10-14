@@ -16,11 +16,11 @@ class FilesController extends Controller
         $currentDirectoryId = $this->getIdCurrentDirectory($user);
         $files = $this->getFiles($currentDirectoryId);
 
-        $subdirectories = $this->getDirectories($currentDirectoryId);
+        $directories = $this->getDirectories($currentDirectoryId);
 
         $this->view('files/list', [
             'files' => $files,
-            'subdirectories' => $subdirectories,
+            'directories' => $directories,
         ]);
     }
 
@@ -28,10 +28,10 @@ class FilesController extends Controller
     {
         $user = $this->session()->get('user_id');
         $directoryId = $this->getIdCurrentDirectory($user);
-        $subdirectories = $this->getDirectories($directoryId);
+        $directories = $this->getDirectories($directoryId);
 
         $this->view('files/add', [
-            'subdirectories' => $subdirectories,
+            'directories' => $directories,
             'directoryId' => $directoryId,
         ]);
     }
@@ -74,20 +74,18 @@ class FilesController extends Controller
         }
     }
 
-    public function download(): void
+    public function download(int $id): void
     {
-        $fileId = $this->request()->query('file');
-
-        $file = FileService::findFile($this->db(), $fileId);
+        $file = FileService::findFile($this->db(), $id);
 
         if ($file) {
             $filePath = $this->storage()->storagePath($file->getFilePath());
 
             if (file_exists($filePath)) {
-                $extention = pathinfo($filePath, PATHINFO_EXTENSION);
+                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename="' . basename($file->getFilename() . ".$extention") . '"');
+                header('Content-Disposition: attachment; filename="' . basename($file->getFilename() . ".$extension") . '"');
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
@@ -107,20 +105,16 @@ class FilesController extends Controller
         }
     }
 
-    public function delete(): void
+    public function delete(int $id): void
     {
-        $fileId = $this->request()->query('file');
-        if (FileService::deleteFile($this->db(), $fileId)) {
+        if (FileService::deleteFile($this->db(), $id)) {
             $this->redirect('/files/list');
         }
     }
 
-    public function edit($id): void
+    public function edit(int $id): void
     {
-
-//        $fileId = $this->request()->query('file');
         $file = FileService::findFile($this->db(), $id);
-        $user = $this->session()->get('user_id');
         if (!$file) {
             $this->redirect('/files/list');
             return;

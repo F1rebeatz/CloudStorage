@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="btn-group d-flex gap-2">
-                        <a href="/files/get/?file=<?= $file->getId() ?>"
+                        <a href="/files/get/<?= $file->getId() ?>"
                            class="btn btn-sm btn-outline-primary">Download</a>
                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal<?= $file->getId() ?>">Delete
@@ -114,7 +114,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <form method="POST" action="/files/remove/?file=<?= $file->getId() ?>">
+                                <form method="POST" action="/files/remove/<?= $file->getId() ?>">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
