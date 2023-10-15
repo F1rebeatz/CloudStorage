@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \Kernel\Auth\AuthInterface $auth
+ * @var \Kernel\Session\SessionInterface $session
  */
 $user = $auth->user();
 ?>
@@ -19,7 +20,7 @@ $user = $auth->user();
                             <a class="nav-link" href="/home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/files/list">Files</a>
+                            <a class="nav-link" href="/directories/get/<?= $session->get('root_directory_id') ?>">Files</a>
                         </li>
                     </ul>
                 </div>

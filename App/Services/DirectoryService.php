@@ -54,12 +54,25 @@ class DirectoryService
     public static function deleteDirectory(DatabaseInterface $db, int $directoryId): bool
     {
         try {
+            $directory = DirectoryService::findDirectory($db, $directoryId);
+            if (!$directory) {
+                return false;
+            }
+
+            $filesInDirectory = FileService::getFilesInDirectory($db, $directoryId);
+
+            foreach ($filesInDirectory as $file) {
+                FileService::deleteFile($db, $file->getId());
+            }
+
             $db->delete('directories', ['id' => $directoryId]);
+
             return true;
         } catch (Exception $e) {
             return false;
         }
     }
+
 
     /**
      * @param int $parentDirectoryId
@@ -89,5 +102,17 @@ class DirectoryService
     {
         $directory = $db->first('directories', ['user_id' => $userId, 'parent_directory_id' => null]);
         return $directory ? $directory['id'] : null;
+    }
+
+    public static function getUsersDirectories(DatabaseInterface $db, int $userId): array {
+        $directories = $db->get('directories', ['user_id' => $userId]);
+        return array_map(function ($directory) {
+            return new DirectoryModel(
+                id: $directory['id'],
+                user_id: $directory['user_id'],
+                parent_directory_id: $directory['parent_directory_id'],
+                directory_name: $directory['directory_name']
+            );
+        }, $directories);
     }
 }

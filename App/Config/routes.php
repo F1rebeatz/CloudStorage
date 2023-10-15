@@ -35,5 +35,10 @@ return [
     Route::post('/logout', [LoginController::class, 'logout']),
 
     Route::get('/admin/users/list', [AdminController::class, 'index'], [AuthMiddleware::class]),
+    Route::get('/admin/users/delete/{id}', [AdminController::class, 'delete'], [AuthMiddleware::class]),
+    Route::get('/admin/users/edit/{id}', [AdminController::class, 'edit'], [AuthMiddleware::class]),
+    Route::put('/admin/users/edit/{id}', [AdminController::class, 'update'], [AuthMiddleware::class]),
+    Route::get('/admin/users/get/{id}', [AdminController::class, 'show'], [AuthMiddleware::class]),
+
 
 ];

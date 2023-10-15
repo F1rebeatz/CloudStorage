@@ -46,7 +46,7 @@
                 <div class="btn-group d-flex gap-2">
                     <a href="/directories/get/<?= $directory->getId() ?>" class="btn btn-sm btn-primary me-2">View</a>
 
-                    <form method="POST" action="/directories/delete/<?= $directory->getId() ?>">
+                    <form method="POST" action="/directories/remove/<?= $directory->getId() ?>">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-sm btn-danger" data-action="delete">Delete</button>
                     </form>
@@ -125,12 +125,14 @@
     </ul>
 
 <?php } ?>
-<a href="/files/list" class="btn btn-outline-secondary mt-3">
-    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M11.354 4.354a.5.5 0 0 0-.708-.708L4 10.293V7.5a.5.5 0 0 0-1 0V10a.5.5 0 0 0 .5.5H10a.5.5 0 0 0 0-1H6.207l6.147-6.146a.5.5 0 0 0 0-.708z"/>
-    </svg>
-    Back
-</a>
+<?php if (!$directory->getParentDirectoryId() == null) { ?>
+    <a href="/directories/get/<?= $directory->getParentDirectoryId() ?>" class="btn btn-outline-secondary mt-3">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 4.354a.5.5 0 0 0-.708-.708L4 10.293V7.5a.5.5 0 0 0-1 0V10a.5.5 0 0 0 .5.5H10a.5.5 0 0 0 0-1H6.207l6.147-6.146a.5.5 0 0 0 0-.708z"/>
+        </svg>
+        Back
+    </a>
+<?php } ?>
 
 <a class="btn btn-outline-primary mt-3" href="/files/add?directory=<?= $directory->getId() ?>">Add New File</a>
 <a class="btn btn-outline-success mt-3" href="/directories/add?directory=<?= $directory->getId() ?>">Create New

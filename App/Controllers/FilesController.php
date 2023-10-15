@@ -103,19 +103,11 @@ class FilesController extends Controller
     public function delete(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
-
-        if ($file) {
-            $isInRootDirectory = $file->getDirectoryId() === null;
-
-            if (FileService::deleteFile($this->db(), $id)) {
-                if ($isInRootDirectory) {
-                    $this->redirect('/directories/get/' . $this->getRootDirectoryId($userId));
-                } else {
-                    $this->redirect('/directories/get/' . $file->getDirectoryId());
-                }
-            }
+        $directory = $file->getDirectoryId();
+        if (FileService::deleteFile($this->db(), $id)) {
+               $this->redirect('/directories/get/' . $directory);
         } else {
-            $this->session()->set('error', 'File not found.');
+            $this->session()->set('error', 'File not removed');
             $this->redirect('/directories/get/' . $file->getDirectoryId());
         }
     }
@@ -124,7 +116,7 @@ class FilesController extends Controller
     {
         $file = FileService::findFile($this->db(), $id);
         if (!$file) {
-            $this->redirect('/directories/get/' . $this->getRootDirectoryId($userId));
+            $this->redirect('/directories/get/' . $this->session()->get('parent_directory_id'));
             return;
         }
         $currentDirectoryId = $file->getDirectoryId();
@@ -140,7 +132,7 @@ class FilesController extends Controller
         $user = $this->session()->get('user_id');
 
         if (!$file) {
-            $this->redirect('/directories/get/' . $this->getRootDirectoryId($userId));
+            $this->redirect('/directories/get/' . $this->getRootDirectoryId($user));
             return;
         }
 

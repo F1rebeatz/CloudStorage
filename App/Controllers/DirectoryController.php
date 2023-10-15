@@ -17,7 +17,7 @@ class DirectoryController extends Controller
         if ($directory) {
             $this->view('/directories/get', ['directory' => $directory, 'files' => $files, 'subdirectories' => $subdirectories]);
         } else {
-            $this->redirect("files/list");
+            $this->redirect("directories/get/{$id}");
         }
     }
 
@@ -37,9 +37,9 @@ class DirectoryController extends Controller
             'parent_directory_id' => $currentDirectory, 'user_id' => $user]);
 
         if ($createdDirectory) {
-            $this->redirect('/files/list');
+            $this->redirect("/directories/get/{$createdDirectory}");
         } else {
-            $this->redirect('/files/list');
+            $this->redirect("/directories/get/{$currentDirectory}");
         }
     }
 
@@ -47,7 +47,7 @@ class DirectoryController extends Controller
         $directory = DirectoryService::findDirectory($this->db(), $id);
 
         if (!$directory) {
-            $this->redirect('/files/list');
+            $this->redirect("directories/get/{$directory->getId()}");
             return;
         }
 
@@ -75,19 +75,25 @@ class DirectoryController extends Controller
         $directory = DirectoryService::findDirectory($this->db(), $id);
 
         if ($directory) {
-            $filesInDirectory = FileService::getFilesInDirectory($this->db(), $id);
-            foreach ($filesInDirectory as $file) {
-                FileService::deleteFile($this->db(), $file->getId());
-            }
+            $parentDirectoryId = $directory->getParentDirectoryId();
+
             if (DirectoryService::deleteDirectory($this->db(), $id)) {
                 $this->session()->set('success', 'Directory and its files deleted successfully.');
             } else {
                 $this->session()->set('error', 'Failed to delete directory.');
             }
+
+            if ($parentDirectoryId !== null) {
+                $this->redirect('/directories/get/' . $parentDirectoryId);
+            } else {
+                $this->redirect('/home');
+            }
         } else {
             $this->session()->set('error', 'Directory not found.');
+            $this->redirect('/home');
         }
-        $this->redirect('/files/list');
     }
+
+
 
 }
