@@ -14,7 +14,6 @@ return [
 
     Route::get('/', [HomeController::class, 'index']),
     Route::get('/home', [HomeController::class, 'index']),
-    Route::get('/files/list', [FilesController::class, 'index'], [AuthMiddleware::class]),
     Route::get('/files/add', [FilesController::class, 'add'], [AuthMiddleware::class]),
     Route::post('/files/add', [FilesController::class, 'store'], [AuthMiddleware::class]),
     Route::get('/files/get/{id}', [FilesController::class, 'download'], [AuthMiddleware::class]),
@@ -27,7 +26,7 @@ return [
     Route::get('/directories/get/{id}', [DirectoryController::class, 'index'], [AuthMiddleware::class]),
     Route::delete('/directories/remove/{id}', [DirectoryController::class, 'delete'],[AuthMiddleware::class]),
     Route::get('/directories/edit/{id}', [DirectoryController::class, 'edit'],[AuthMiddleware::class]),
-
+    Route::put('/directories/edit/{id}', [DirectoryController::class, 'update'],[AuthMiddleware::class]),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),

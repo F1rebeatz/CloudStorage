@@ -92,7 +92,6 @@ class Router implements RouterInterface
             return false;
         }
 
-        // Разбиваем URI на части
         $uriParts = explode('/', $uri);
 
         foreach ($this->routes[$method] as $route) {
@@ -103,14 +102,12 @@ class Router implements RouterInterface
                 continue;
             }
 
-            // Проверяем совпадение первой части URI и маршрута
             if ($routeParts[0] !== $uriParts[0]) {
                 continue;
             }
 
             $parameters = $this->extractParameters($routeUri, $uri);
 
-            // Проверяем совпадение остальных частей URI
             $matching = true;
             for ($i = 1; $i < count($routeParts); $i++) {
                 if ($routeParts[$i] !== $uriParts[$i] && !preg_match('/^{(\w+)}$/', $routeParts[$i])) {
@@ -142,7 +139,6 @@ class Router implements RouterInterface
                 $paramName = trim($patternPart, '{}');
                 $paramValue = $uriParts[$i];
 
-                // Попробуем преобразовать в число, если возможно
                 $parameters[$paramName] = is_numeric($paramValue) ? intval($paramValue) : $paramValue;
             }
         }

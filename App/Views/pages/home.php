@@ -1,7 +1,10 @@
 <?php
 /** @var \Kernel\View\View $view
  **  @var \Kernel\Auth\AuthInterface $auth
+ * @var \Kernel\Session\SessionInterface $session
+ *
  */
+
 ?>
 
 <?php $view->component('start') ?>
@@ -9,7 +12,7 @@
         <h1>Welcome to CloudStorage</h1>
         <p>Simple file storage</p>
         <?php if ($auth->check()) { ?>
-          <a href="/files/list" class="btn btn-outline-primary">View Files</a>
+          <a href="/directories/get/<?= $session->get('root_directory_id') ?>" class="btn btn-outline-primary">View Files</a>
         <?php } else { ?>
             <p>Do you have an account?</p>
             <a href="/login" class="btn btn-outline-primary">Log In</a>

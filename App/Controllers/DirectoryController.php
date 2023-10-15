@@ -43,18 +43,32 @@ class DirectoryController extends Controller
         }
     }
 
+    public function edit(int $id) : void {
+        $directory = DirectoryService::findDirectory($this->db(), $id);
 
-    public function update($directoryId)
+        if (!$directory) {
+            $this->redirect('/files/list');
+            return;
+        }
+
+        $this->view('directories/edit', ['directory' => $directory]);
+    }
+
+    public function update($id): void
     {
         $newDirectoryName = $this->request()->input('name');
-        $updatedDirectory = $this->directoryService->updateDirectory($directoryId, ['name' => $newDirectoryName]);
+        $updatedDirectory = DirectoryService::updateDirectory($this->db(), $id, ['directory_name' => $newDirectoryName]);
 
         if ($updatedDirectory) {
-            $this->redirect("/directories/get/{$directoryId}");
+            $this->session()->set('success', 'Directory updated successfully.');
         } else {
-            $this->redirect('/directories');
+            $this->session()->set('error', 'Directory update failed.');
         }
+
+        $this->redirect("/directories/get/{$id}");
     }
+
+
 
     public function delete(int $id): void
     {

@@ -10,9 +10,11 @@
 <?php $view->component('start') ?>
     <div class="col-6">
         <form action="/files/edit/" method="post" enctype="multipart/form-data">
+
             <div class="mb-3">
                 <label for="formFile" class="form-label">New file name</label>
-                <input class="form-control" type="text" name="title" id="formFile" value="<?php echo $file->getFilename()?>">
+                <input class="form-control" type="text" name="title" id="formFile"
+                       value="<?php echo $file->getFilename() ?>">
                 <input type="hidden" name="fileId" value="<?= $file->getId() ?>">
             </div>
             <?php if ($session->has('title')) { ?>
@@ -25,13 +27,13 @@
                     <option value="<?= $directoryId; ?>">Current Directory</option>
                     <?php foreach ($subdirectories as $directory) { ?>
                         <option
-                            value="<?php echo $directory->id(); ?>" <?php echo $directory->id() == $file->getDirectoryId() ? 'selected' : '' ?>>
-                            <?php echo $directory->directoryName(); ?></option>
+                            value="<?php echo $directory->getId(); ?>" <?php echo $directory->getId() == $file->getDirectoryId() ? 'selected' : '' ?>>
+                            <?php echo $directory->getDirectoryName(); ?></option>
                     <?php } ?>
                 </select>
             </div>
 
-            <button class="btn btn-primary mt-3" type="submit">Submit</button>
+            <button class="btn btn-primary mt-3" type="submit">Update</button>
         </form>
     </div>
 

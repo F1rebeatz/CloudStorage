@@ -38,7 +38,7 @@ class DirectoryService
     public static function updateDirectory(DatabaseInterface $db, int $directoryId, array $data): ?DirectoryModel
     {
         try {
-            $db->update('directories', $directoryId, $data);
+            $db->update('directories', $data, ['id' => $directoryId]);
             $directory = $db->first('directories', ['id' => $directoryId]);
             return new DirectoryModel(
                 id: $directory['id'],

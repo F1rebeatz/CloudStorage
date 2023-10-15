@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Services\DirectoryService;
 use Kernel\Controller\Controller;
 
 class RegisterController extends Controller
@@ -30,7 +31,7 @@ class RegisterController extends Controller
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT),
         ]);
 
-        $this->db()->insert('directories', [
+        $directory = DirectoryService::createDirectory($this->db(), [
             'user_id' => $lastId,
             'parent_directory_id' => null,
             'directory_name' => 'root',
@@ -38,9 +39,10 @@ class RegisterController extends Controller
 
         if ($this->request()->input('check')) {
             $this->session()->set('user_id', $lastId);
-            $this->redirect('/files/list');
+            $this->session()->set('root_directory_id', $directory);
+            $this->redirect('/directories/get/' . $directory);
+        } else {
+            $this->redirect('/home');
         }
-
-        $this->redirect('/files/list');
     }
 }
