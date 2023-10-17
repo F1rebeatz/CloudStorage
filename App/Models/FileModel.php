@@ -9,7 +9,9 @@ class FileModel
         private int    $user_id,
         private ?int   $directory_id,
         private string $filename,
-        private string $filepath
+        private string $filepath,
+        private string $created_at,
+        private string $updated_at
     ) {
     }
 
@@ -36,5 +38,21 @@ class FileModel
     public function getFilepath(): string
     {
         return $this->filepath;
+    }
+
+    public function getCreatedAt(): string
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): string
+    {
+        return $this->updated_at;
+    }
+
+    public function getExtension(): string
+    {
+        $filenameParts = explode('.', $this->filepath);
+        return end($filenameParts);
     }
 }

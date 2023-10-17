@@ -88,6 +88,7 @@
                 </div>
 
                 <div class="btn-group d-flex gap-2">
+                    <a href="/files/show/<?= $file->getId() ?>" class="btn btn-sm btn-outline-info">Info</a>
                     <a href="/files/get/<?= $file->getId() ?>"
                        class="btn btn-sm btn-outline-primary">Download</a>
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"

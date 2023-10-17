@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\DirectoryModel;
 use App\Services\DirectoryService;
 use App\Services\FileService;
+use App\Services\UserService;
 use Kernel\Controller\Controller;
 use Kernel\Database\DatabaseInterface;
 
@@ -164,6 +165,29 @@ class FilesController extends Controller
         }
         $this->redirect('/directories/get/' . $newDirectoryId);
     }
+
+    public function show(int $id): void {
+        $file = FileService::findFile($this->db(), $id);
+        $user = UserService::getUserById($this->db(), $file->getUserId());
+        $this->view('files/show', ['file' => $file, 'user' => $user]);
+    }
+
+
+    public function getSharedUsers(int $id)
+    {
+        // Здесь ты можешь получить список пользователей, имеющих доступ к файлу с указанным id и вернуть их на страницу
+    }
+
+    public function addSharedUser(int $id, int $user_id)
+    {
+        // Здесь добавь логику для предоставления доступа к файлу (например, добавление записи в базу данных, указывая, что пользователь имеет доступ к файлу)
+    }
+
+    public function removeSharedUser(int $id, int $user_id)
+    {
+        // Здесь добавь логику для удаления доступа к файлу у пользователя (например, удаление записи из базы данных)
+    }
+
 
     private function getDirectories(?int $directoryId): array
     {

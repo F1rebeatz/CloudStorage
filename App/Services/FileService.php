@@ -4,24 +4,17 @@ namespace App\Services;
 
 use App\Models\FileModel;
 use Exception;
-use Kernel\Config\Config;
 use Kernel\Database\DatabaseInterface;
-use Kernel\Storage\Storage;
 
 class FileService
 {
-
-    /**
-     * @param int $directoryInt
-     * @return array<FileModel>
-     */
-    public static function getFilesInDirectory(DatabaseInterface $db, ?int $directoryInt): array
+    public static function getFilesInDirectory(DatabaseInterface $db, ?int $directoryId): array
     {
-        if ($directoryInt === null) {
+        if ($directoryId === null) {
             return [];
         }
 
-        $conditions = ['directory_id' => $directoryInt];
+        $conditions = ['directory_id' => $directoryId];
         $files = $db->get('files', $conditions);
 
         return array_map(function ($file) {
@@ -30,13 +23,14 @@ class FileService
                 user_id: $file['user_id'],
                 directory_id: $file['directory_id'],
                 filename: $file['file_name'],
-                filepath: $file['file_path']
+                filepath: $file['file_path'],
+                created_at: $file['created_at'],
+                updated_at: $file['updated_at']
             );
         }, $files);
     }
 
-
-    public static function createFile(DatabaseInterface $db, $data): bool
+    public static function createFile(DatabaseInterface $db, array $data): bool
     {
         try {
             return $db->insert('files', $data);
@@ -58,22 +52,24 @@ class FileService
     public static function deleteFile(DatabaseInterface $db, int $fileId): bool
     {
         try {
-
             $file = $db->first('files', ['id' => $fileId]);
 
             if (!$file) {
                 return false;
             }
-            $file = new FileModel(
+
+            $fileModel = new FileModel(
                 id: $file['id'],
                 user_id: $file['user_id'],
                 directory_id: $file['directory_id'],
                 filename: $file['file_name'],
-                filepath: $file['file_path']
+                filepath: $file['file_path'],
+                created_at: $file['created_at'],
+                updated_at: $file['updated_at']
             );
 
             $storage = new Storage(new Config());
-            $filePath = $file->getFilepath();
+            $filePath = $fileModel->getFilepath();
             $fullFilePath = $storage->storagePath($filePath);
 
             if (file_exists($fullFilePath) && unlink($fullFilePath)) {
@@ -86,7 +82,6 @@ class FileService
             return false;
         }
     }
-
 
     public static function findFile(DatabaseInterface $db, int $fileId): ?FileModel
     {
@@ -101,9 +96,9 @@ class FileService
             user_id: $file['user_id'],
             directory_id: $file['directory_id'],
             filename: $file['file_name'],
-            filepath: $file['file_path']
+            filepath: $file['file_path'],
+            created_at: $file['created_at'],
+            updated_at: $file['updated_at']
         );
     }
-
 }
-

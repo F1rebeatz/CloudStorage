@@ -98,25 +98,13 @@ class Router implements RouterInterface
             $routeUri = $route->getUri();
             $routeParts = explode('/', $routeUri);
 
-            if (count($routeParts) !== count($uriParts)) {
+            if (count($routeParts) !== count($uriParts) || $routeParts[0] !== $uriParts[0]) {
                 continue;
             }
 
-            if ($routeParts[0] !== $uriParts[0]) {
-                continue;
-            }
+            $parameters = $this->extractParameters($routeParts, $uriParts);
 
-            $parameters = $this->extractParameters($routeUri, $uri);
-
-            $matching = true;
-            for ($i = 1; $i < count($routeParts); $i++) {
-                if ($routeParts[$i] !== $uriParts[$i] && !preg_match('/^{(\w+)}$/', $routeParts[$i])) {
-                    $matching = false;
-                    break;
-                }
-            }
-
-            if ($matching) {
+            if ($parameters !== false) {
                 $route->setParameters($parameters);
                 return $route;
             }
@@ -125,18 +113,17 @@ class Router implements RouterInterface
         return false;
     }
 
-
-
-    private function extractParameters(string $uriPattern, string $uri): array
+    private function extractParameters(array $routeParts, array $uriParts): array|false
     {
-        $uriParts = explode('/', $uri);
-        $patternParts = explode('/', $uriPattern);
-
         $parameters = [];
 
-        foreach ($patternParts as $i => $patternPart) {
-            if (strpos($patternPart, '{') === 0 && strpos($patternPart, '}') === strlen($patternPart) - 1) {
-                $paramName = trim($patternPart, '{}');
+        for ($i = 1; $i < count($routeParts); $i++) {
+            if ($routeParts[$i] !== $uriParts[$i] && !preg_match('/^{(\w+)}$/', $routeParts[$i])) {
+                return false;
+            }
+
+            if (preg_match('/^{(\w+)}$/', $routeParts[$i])) {
+                $paramName = trim($routeParts[$i], '{}');
                 $paramValue = $uriParts[$i];
 
                 $parameters[$paramName] = is_numeric($paramValue) ? intval($paramValue) : $paramValue;

@@ -22,7 +22,6 @@ class View implements ViewInterface
     {
 
         $filePath = APP_PATH . "/App/Views/pages/$name.php";
-
         if (!file_exists($filePath)) {
             throw new ViewNotFoundException("Views $name not found");
         }

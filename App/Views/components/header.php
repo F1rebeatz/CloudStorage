@@ -20,8 +20,14 @@ $user = $auth->user();
                             <a class="nav-link" href="/home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/directories/get/<?= $session->get('root_directory_id') ?>">Files</a>
+                            <a class="nav-link"
+                               href="/directories/get/<?= $session->get('root_directory_id') ?>">Files</a>
                         </li>
+                        <?php if ($user && $user->role() == 1) { ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/users/list">AdminPanel</a>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </div>
                 <?php if ($auth->check()) { ?>

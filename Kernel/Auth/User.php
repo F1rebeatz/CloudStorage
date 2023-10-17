@@ -8,7 +8,8 @@ class User
         private int $id,
         private string $email,
         private string $password,
-        private string $name
+        private string $name,
+        private string $role
     ) {
 
     }
@@ -30,5 +31,9 @@ class User
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function role(): int {
+        return intval($this->role);
     }
 }

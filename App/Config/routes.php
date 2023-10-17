@@ -18,15 +18,20 @@ return [
     Route::post('/files/add', [FilesController::class, 'store'], [AuthMiddleware::class]),
     Route::get('/files/get/{id}', [FilesController::class, 'download'], [AuthMiddleware::class]),
     Route::delete('/files/remove/{id}', [FilesController::class, 'delete'], [AuthMiddleware::class]),
-    Route::post('/files/edit/', [FilesController::class, 'update'],[AuthMiddleware::class]),
-    Route::get('/files/edit/{id}', [FilesController::class, 'edit'],[AuthMiddleware::class]),
+    Route::post('/files/edit/', [FilesController::class, 'update'], [AuthMiddleware::class]),
+    Route::get('/files/edit/{id}', [FilesController::class, 'edit'], [AuthMiddleware::class]),
+    Route::get('/files/show/{id}', [FilesController::class, 'show'], [AuthMiddleware::class]),
 
     Route::get('/directories/add', [DirectoryController::class, 'add'], [AuthMiddleware::class]),
     Route::post('/directories/add', [DirectoryController::class, 'create'], [AuthMiddleware::class]),
     Route::get('/directories/get/{id}', [DirectoryController::class, 'index'], [AuthMiddleware::class]),
-    Route::delete('/directories/remove/{id}', [DirectoryController::class, 'delete'],[AuthMiddleware::class]),
-    Route::get('/directories/edit/{id}', [DirectoryController::class, 'edit'],[AuthMiddleware::class]),
-    Route::put('/directories/edit/{id}', [DirectoryController::class, 'update'],[AuthMiddleware::class]),
+    Route::delete('/directories/remove/{id}', [DirectoryController::class, 'delete'], [AuthMiddleware::class]),
+    Route::get('/directories/edit/{id}', [DirectoryController::class, 'edit'], [AuthMiddleware::class]),
+    Route::put('/directories/edit/{id}', [DirectoryController::class, 'update'], [AuthMiddleware::class]),
+
+    Route::get('/files/share/{id}', [FilesController::class, 'getSharedUsers']),
+    Route::put('/files/share/{id}/{user_id}', [FilesController::class, 'addSharedUser']),
+    Route::delete('/files/share/{id}/{user_id}', [FilesController::class, 'removeSharedUser']),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),
@@ -39,6 +44,4 @@ return [
     Route::get('/admin/users/edit/{id}', [AdminController::class, 'edit'], [AuthMiddleware::class]),
     Route::put('/admin/users/edit/{id}', [AdminController::class, 'update'], [AuthMiddleware::class]),
     Route::get('/admin/users/get/{id}', [AdminController::class, 'show'], [AuthMiddleware::class]),
-
-
 ];

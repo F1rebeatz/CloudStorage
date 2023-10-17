@@ -37,7 +37,7 @@
             <td><?= $user->getName() ?></td>
             <td><?= $user->getEmail() ?></td>
             <td>
-                <a href="/admin/users/show/<?= $user->getId() ?>" class="btn btn-info">View</a>
+                <a href="/admin/users/get/<?= $user->getId() ?>" class="btn btn-info">View</a>
                 <a href="/admin/users/edit/<?=  $user->getId() ?>" class="btn btn-warning">Edit</a>
                 <a href="/admin/users/delete/<?=  $user->getId() ?>" class="btn btn-danger"
                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
