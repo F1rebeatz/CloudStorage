@@ -2,6 +2,7 @@
 
 use App\Controllers\AdminController;
 use App\Controllers\DirectoryController;
+use App\Controllers\FilesAccessController;
 use App\Controllers\FilesController;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
@@ -29,9 +30,9 @@ return [
     Route::get('/directories/edit/{id}', [DirectoryController::class, 'edit'], [AuthMiddleware::class]),
     Route::put('/directories/edit/{id}', [DirectoryController::class, 'update'], [AuthMiddleware::class]),
 
-    Route::get('/files/share/{id}', [FilesController::class, 'getSharedUsers']),
-    Route::put('/files/share/{id}/{user_id}', [FilesController::class, 'addSharedUser']),
-    Route::delete('/files/share/{id}/{user_id}', [FilesController::class, 'removeSharedUser']),
+    Route::get('/files/share/{id}', [FilesAccessController::class, 'getSharedUsers'], [AuthMiddleware::class]),
+    Route::put('/files/share/{id}', [FilesAccessController::class, 'addSharedUser'], [AuthMiddleware::class]),
+    Route::delete('/files/share/{id}/{user_id}', [FilesAccessController::class, 'removeSharedUser'], [AuthMiddleware::class]),
 
     Route::get('/register', [RegisterController::class, 'index'], [GuestMiddleware::class]),
     Route::post('/register', [RegisterController::class, 'register']),

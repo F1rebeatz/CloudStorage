@@ -67,4 +67,17 @@ class UserService
         }
     }
 
+    public static function getUserByEmail(DatabaseInterface $db, string $userEmail)
+    {
+        $user = $db->first('users', ['email' => $userEmail]);
+        if ($user) {
+            return new UserModel(
+                id: $user['id'],
+                name: $user['name'],
+                email: $user['email'],
+                password: $user['password']
+            );
+        }
+    }
+
 }

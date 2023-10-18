@@ -89,14 +89,14 @@
 
                 <div class="btn-group d-flex gap-2">
                     <a href="/files/show/<?= $file->getId() ?>" class="btn btn-sm btn-outline-info">Info</a>
-                    <a href="/files/get/<?= $file->getId() ?>"
-                       class="btn btn-sm btn-outline-primary">Download</a>
+                    <a href="/files/get/<?= $file->getId() ?>" class="btn btn-sm btn-outline-primary">Download</a>
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteModal<?= $file->getId() ?>">Delete
                     </button>
-                    <a href="/files/edit/<?= $file->getId() ?>"
-                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="/files/edit/<?= $file->getId() ?>" class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="/files/share/<?= $file->getId() ?>" class="btn btn-sm btn-outline-success">Share</a>
                 </div>
+
             </li>
 
             <!-- Delete Confirmation Modal -->
@@ -128,8 +128,10 @@
 <?php } ?>
 <?php if (!$directory->getParentDirectoryId() == null) { ?>
     <a href="/directories/get/<?= $directory->getParentDirectoryId() ?>" class="btn btn-outline-secondary mt-3">
-        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M11.354 4.354a.5.5 0 0 0-.708-.708L4 10.293V7.5a.5.5 0 0 0-1 0V10a.5.5 0 0 0 .5.5H10a.5.5 0 0 0 0-1H6.207l6.147-6.146a.5.5 0 0 0 0-.708z"/>
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M11.354 4.354a.5.5 0 0 0-.708-.708L4 10.293V7.5a.5.5 0 0 0-1 0V10a.5.5 0 0 0 .5.5H10a.5.5 0 0 0 0-1H6.207l6.147-6.146a.5.5 0 0 0 0-.708z"/>
         </svg>
         Back
     </a>

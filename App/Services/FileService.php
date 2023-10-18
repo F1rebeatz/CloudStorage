@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\FileModel;
 use Exception;
+use Kernel\Config\Config;
 use Kernel\Database\DatabaseInterface;
+use Kernel\Storage\Storage;
 
 class FileService
 {
@@ -87,6 +89,23 @@ class FileService
     {
         $file = $db->first('files', ['id' => $fileId]);
 
+        if (!$file) {
+            return null;
+        }
+
+        return new FileModel(
+            id: $file['id'],
+            user_id: $file['user_id'],
+            directory_id: $file['directory_id'],
+            filename: $file['file_name'],
+            filepath: $file['file_path'],
+            created_at: $file['created_at'],
+            updated_at: $file['updated_at']
+        );
+    }
+
+    public static function findSharedFile(DatabaseInterface $db, array $data): ?FileModel {
+        $file = $db->first('files', $data);
         if (!$file) {
             return null;
         }
