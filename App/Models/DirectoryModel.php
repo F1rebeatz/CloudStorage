@@ -11,21 +11,21 @@ class DirectoryModel
         private string $directory_name
     ) {
     }
-
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getUserId(): int
-    {
-        return $this->user_id;
     }
 
     public function getParentDirectoryId(): ?int
     {
         return $this->parent_directory_id;
     }
+    /**
+     * @return string
+     */
 
     public function getDirectoryName(): string
     {

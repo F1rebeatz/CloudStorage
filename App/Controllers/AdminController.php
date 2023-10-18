@@ -8,12 +8,19 @@ use Kernel\Controller\Controller;
 
 class AdminController extends Controller
 {
+    /**
+     * @return void
+     */
     public function index(): void
     {
         $users = UserService::getAllUsers($this->db());
         $this->view('admin/users/list', ['users' => $users]);
     }
 
+    /*
+     * @param int $id The user ID.
+     * @return void
+     */
     public function show(int $id): void
     {
         $user = UserService::getUserById($this->db(), $id);
@@ -27,6 +34,10 @@ class AdminController extends Controller
         $this->view('admin/users/get', ['user' => $user]);
     }
 
+    /**
+     * @param int $id The user ID.
+     * @return void
+     */
     public function delete(int $id): void
     {
         $result = UserService::deleteUser($this->db(), $id);
@@ -40,7 +51,11 @@ class AdminController extends Controller
         $this->redirect('/admin/users/list');
     }
 
-    public function edit(int $id)
+    /**
+     * @param int $id The user ID.
+     * @return void
+     */
+    public function edit(int $id): void
     {
         $user = UserService::getUserById($this->db(), $id);
 
@@ -53,6 +68,10 @@ class AdminController extends Controller
         $this->view('admin/users/edit', ['user' => $user]);
     }
 
+    /**
+     * @param int $id The user ID.
+     * @return void
+     */
     public function update(int $id): void
     {
         $user = UserService::getUserById($this->db(), $id);
@@ -82,8 +101,11 @@ class AdminController extends Controller
             return;
         }
 
-        $result = UserService::updateUser($this->db(), ['name' => $name, 'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT)], ['id' => $id]);
+        $result = UserService::updateUser($this->db(), [
+            'name' => $name,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ], ['id' => $id]);
 
         if ($result) {
             $this->session()->set('success', 'User updated successfully');
@@ -93,6 +115,4 @@ class AdminController extends Controller
 
         $this->redirect('/admin/users/list');
     }
-
 }
-

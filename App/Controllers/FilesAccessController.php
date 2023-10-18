@@ -10,6 +10,10 @@ use Kernel\Controller\Controller;
 
 class FilesAccessController extends Controller
 {
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function getSharedUsers(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
@@ -28,6 +32,10 @@ class FilesAccessController extends Controller
         ]);
     }
 
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function addSharedUser(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
@@ -69,19 +77,33 @@ class FilesAccessController extends Controller
         }
     }
 
-
+    /**
+     * @param string $errorMessage The error message.
+     * @param int $id The file ID.
+     * @return void
+     */
     private function handleError(string $errorMessage, int $id): void
     {
         $this->session()->set('error', $errorMessage);
         $this->redirect("/files/share/{$id}");
     }
 
+    /**
+     * @param string $successMessage The success message.
+     * @param int $id The file ID.
+     * @return void
+     */
     private function handleSuccess(string $successMessage, int $id): void
     {
         $this->session()->set('success', $successMessage);
         $this->redirect("/files/share/{$id}");
     }
 
+    /**
+     * @param int $id The file ID.
+     * @param int $user_id The user ID to remove from sharing.
+     * @return void
+     */
     public function removeSharedUser(int $id, int $user_id): void
     {
         $file = FileService::findFile($this->db(), $id);
@@ -91,6 +113,7 @@ class FilesAccessController extends Controller
 
         FileAccessService::removeSharedUser($this->db(), $id, $user_id);
         FileService::deleteFile($this->db(), $sharedFile->getId());
+
         $this->redirect("/files/share/{$id}");
     }
 }

@@ -8,6 +8,10 @@ use Kernel\Database\DatabaseInterface;
 
 class UserService
 {
+    /**
+     * @param DatabaseInterface $db
+     * @return array
+     */
     public static function getAllUsers(DatabaseInterface $db): array
     {
 
@@ -20,6 +24,11 @@ class UserService
         ), $usersData);
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param $id
+     * @return UserModel|null
+     */
     public static function getUserById(DatabaseInterface $db, $id): ?UserModel
     {
         $userData = $db->first('users', ['id' => $id]);
@@ -35,6 +44,12 @@ class UserService
         return null;
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param array $data
+     * @param array $conditions
+     * @return bool
+     */
     public static function updateUser(DatabaseInterface $db, array $data, array $conditions): bool
     {
         if ($db->update('users', $data, $conditions)) {
@@ -44,6 +59,11 @@ class UserService
     }
 
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $id
+     * @return bool
+     */
     public static function deleteUser(DatabaseInterface $db, int $id): bool
     {
         try {
@@ -67,7 +87,12 @@ class UserService
         }
     }
 
-    public static function getUserByEmail(DatabaseInterface $db, string $userEmail)
+    /**
+     * @param DatabaseInterface $db
+     * @param string $userEmail
+     * @return UserModel|null
+     */
+    public static function getUserByEmail(DatabaseInterface $db, string $userEmail): ?UserModel
     {
         $user = $db->first('users', ['email' => $userEmail]);
         if ($user) {

@@ -12,6 +12,9 @@ use Kernel\Database\DatabaseInterface;
 
 class FilesController extends Controller
 {
+    /**
+     * @return void
+     */
     public function add(): void
     {
         $user = $this->session()->get('user_id');
@@ -23,6 +26,9 @@ class FilesController extends Controller
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function store(): void
     {
         $file = $this->request()->file('file');
@@ -71,6 +77,10 @@ class FilesController extends Controller
         }
     }
 
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function download(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
@@ -91,29 +101,35 @@ class FilesController extends Controller
                 readfile($filePath);
                 exit;
             } else {
-
                 $this->session()->set('error', 'File not found');
                 $this->redirect('/directories/get/' . $file->getDirectoryId());
             }
         } else {
-
             $this->session()->set('error', 'File not found');
             $this->redirect('/directories/get/' . $file->getDirectoryId());
         }
     }
 
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function delete(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
         $directory = $file->getDirectoryId();
         if (FileService::deleteFile($this->db(), $id)) {
-               $this->redirect('/directories/get/' . $directory);
+            $this->redirect('/directories/get/' . $directory);
         } else {
             $this->session()->set('error', 'File not removed');
             $this->redirect('/directories/get/' . $file->getDirectoryId());
         }
     }
 
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function edit(int $id): void
     {
         $file = FileService::findFile($this->db(), $id);
@@ -122,11 +138,13 @@ class FilesController extends Controller
             return;
         }
         $currentDirectoryId = $file->getDirectoryId();
-
         $subdirectories = $this->getDirectories($currentDirectoryId);
         $this->view('files/edit', ['file' => $file, 'subdirectories' => $subdirectories, 'directoryId' => $currentDirectoryId]);
     }
 
+    /**
+     * @return void
+     */
     public function update(): void
     {
         $fileId = $this->request()->input('fileId');
@@ -167,27 +185,41 @@ class FilesController extends Controller
         $this->redirect('/directories/get/' . $newDirectoryId);
     }
 
+    /**
+     * @param int $id The file ID.
+     * @return void
+     */
     public function show(int $id): void {
         $file = FileService::findFile($this->db(), $id);
         $user = UserService::getUserById($this->db(), $file->getUserId());
         $this->view('files/show', ['file' => $file, 'user' => $user]);
     }
 
+    /**
+     * @param int $user The ID of the user.
+     * @return int|null The ID of the current directory, or null if it is not set.
+     */
     private function getIdCurrentDirectory(int $user): ?int
     {
         $directoryId = $this->request()->query('directory');
-
         return $directoryId === null ? $this->getRootDirectoryId($user) : intval($directoryId);
     }
-
+    /**
+     * @param int $user The user ID.
+     * @return int|null The ID of the root directory, or null if it doesn't exist.
+     */
     private function getRootDirectoryId(int $user): ?int
     {
         return DirectoryService::rootDirectory($this->db(), $user);
     }
-
+    /**
+     * @param int|null $directoryId The ID of the directory to retrieve subdirectories for.
+     * @return array The array of subdirectories.
+     */
     private function getDirectories(?int $directoryId): array
     {
         return DirectoryService::getSubdirectories($this->db(), $directoryId);
     }
 }
+
 

@@ -1,17 +1,24 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Services\DirectoryService;
 use Kernel\Controller\Controller;
 
 class RegisterController extends Controller
 {
-    public function index() {
+    /**
+     * @return void
+     */
+    public function index()
+    {
         $this->view('register');
     }
-
-    public function register() {
-
+    /**
+     * @return void
+     */
+    public function register(): void
+    {
         $validation = $this->request()->validate([
             'name' => ['required', 'max:25'],
             'email' => ['required', 'email'],
@@ -25,7 +32,7 @@ class RegisterController extends Controller
             $this->redirect('/register');
         }
 
-       $lastId = $this->db()->insert('users', [
+        $lastId = $this->db()->insert('users', [
             'name' => $this->request()->input('name'),
             'email' => $this->request()->input('email'),
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT),

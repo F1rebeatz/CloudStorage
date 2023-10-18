@@ -10,6 +10,11 @@ use Kernel\Database\DatabaseInterface;
 class DirectoryService
 {
 
+    /**
+     * @param DatabaseInterface $db
+     * @param array $data
+     * @return int|null
+     */
     public static function createDirectory(DatabaseInterface $db, array $data): ?int
     {
         try {
@@ -19,7 +24,12 @@ class DirectoryService
         }
     }
 
-    public static function findDirectory(DatabaseInterface $db,int $id): ?DirectoryModel
+    /**
+     * @param DatabaseInterface $db
+     * @param int $id
+     * @return DirectoryModel|null
+     */
+    public static function findDirectory(DatabaseInterface $db, int $id): ?DirectoryModel
     {
         $directory = $db->first('directories', ['id' => $id]);
         if ($directory) {
@@ -35,6 +45,12 @@ class DirectoryService
     }
 
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $directoryId
+     * @param array $data
+     * @return DirectoryModel|null
+     */
     public static function updateDirectory(DatabaseInterface $db, int $directoryId, array $data): ?DirectoryModel
     {
         try {
@@ -51,6 +67,11 @@ class DirectoryService
         }
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $directoryId
+     * @return bool
+     */
     public static function deleteDirectory(DatabaseInterface $db, int $directoryId): bool
     {
         try {
@@ -98,12 +119,22 @@ class DirectoryService
     }
 
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $userId
+     * @return int|null
+     */
     public static function rootDirectory(DatabaseInterface $db, int $userId): ?int
     {
         $directory = $db->first('directories', ['user_id' => $userId, 'parent_directory_id' => null]);
         return $directory ? $directory['id'] : null;
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $userId
+     * @return array
+     */
     public static function getUsersDirectories(DatabaseInterface $db, int $userId): array {
         $directories = $db->get('directories', ['user_id' => $userId]);
         return array_map(function ($directory) {

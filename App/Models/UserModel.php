@@ -4,6 +4,12 @@ namespace App\Models;
 
 class UserModel
 {
+    /**
+     * @param int $id
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     */
     public function __construct(
         private int    $id,
         private string $name,
@@ -13,23 +19,28 @@ class UserModel
     {
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
 }

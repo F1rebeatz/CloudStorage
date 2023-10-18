@@ -1,16 +1,25 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Services\DirectoryService;
 use Kernel\Controller\Controller;
 
 class LoginController extends Controller
 {
-    public function index():void {
+    /**
+     * @return void
+     */
+    public function index(): void
+    {
         $this->view('login');
     }
 
-    public function login() {
+    /**
+     * @return void
+     */
+    public function login(): void
+    {
         $email = $this->request()->input('email');
         $password = $this->request()->input('password');
 
@@ -24,9 +33,12 @@ class LoginController extends Controller
         $this->redirect('/login');
     }
 
-
-    public function logout() {
+    /**
+     * @return void
+     */
+    public function logout(): void
+    {
         $this->auth()->logout();
-        return $this->redirect('/login');
+        $this->redirect('/home');
     }
 }

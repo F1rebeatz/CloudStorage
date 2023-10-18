@@ -7,6 +7,9 @@ use Kernel\Middleware\AbstractMiddleware;
 class AuthMiddleware extends AbstractMiddleware
 {
 
+    /**
+     * @return void
+     */
     public function handle(): void
     {
        if (!$this->auth->check()) {

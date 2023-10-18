@@ -8,7 +8,11 @@ use Kernel\Controller\Controller;
 
 class DirectoryController extends Controller
 {
-    public function index($id)
+    /**
+     * @param int $id The directory ID.
+     * @return void
+     */
+    public function index(int $id): void
     {
         $directory = DirectoryService::findDirectory($this->db(), $id);
         $subdirectories = DirectoryService::getSubdirectories($this->db(), $id);
@@ -21,20 +25,28 @@ class DirectoryController extends Controller
         }
     }
 
-    public function add()
+    /**
+     * @return void
+     */
+    public function add(): void
     {
         $directory = intval($this->request()->query('directory'));
         $this->view('directories/add', ['directory' => $directory]);
     }
 
-
-    public function create()
+    /**
+     * @return void
+     */
+    public function create(): void
     {
         $directoryName = $this->request()->input('directory_name');
         $currentDirectory = intval($this->request()->input('directory'));
         $user = $this->session()->get('user_id');
-        $createdDirectory = DirectoryService::createDirectory($this->db(), ['directory_name' => $directoryName,
-            'parent_directory_id' => $currentDirectory, 'user_id' => $user]);
+        $createdDirectory = DirectoryService::createDirectory($this->db(), [
+            'directory_name' => $directoryName,
+            'parent_directory_id' => $currentDirectory,
+            'user_id' => $user
+        ]);
 
         if ($createdDirectory) {
             $this->redirect("/directories/get/{$createdDirectory}");
@@ -43,7 +55,12 @@ class DirectoryController extends Controller
         }
     }
 
-    public function edit(int $id) : void {
+    /**
+     * @param int $id The directory ID.
+     * @return void
+     */
+    public function edit(int $id): void
+    {
         $directory = DirectoryService::findDirectory($this->db(), $id);
 
         if (!$directory) {
@@ -54,7 +71,11 @@ class DirectoryController extends Controller
         $this->view('directories/edit', ['directory' => $directory]);
     }
 
-    public function update($id): void
+    /**
+     * @param int $id The directory ID.
+     * @return void
+     */
+    public function update(int $id): void
     {
         $newDirectoryName = $this->request()->input('name');
         $updatedDirectory = DirectoryService::updateDirectory($this->db(), $id, ['directory_name' => $newDirectoryName]);
@@ -68,8 +89,10 @@ class DirectoryController extends Controller
         $this->redirect("/directories/get/{$id}");
     }
 
-
-
+    /**
+     * @param int $id The directory ID.
+     * @return void
+     */
     public function delete(int $id): void
     {
         $directory = DirectoryService::findDirectory($this->db(), $id);
@@ -93,7 +116,4 @@ class DirectoryController extends Controller
             $this->redirect('/home');
         }
     }
-
-
-
 }

@@ -10,6 +10,11 @@ use Kernel\Storage\Storage;
 
 class FileService
 {
+    /**
+     * @param DatabaseInterface $db
+     * @param int|null $directoryId
+     * @return array
+     */
     public static function getFilesInDirectory(DatabaseInterface $db, ?int $directoryId): array
     {
         if ($directoryId === null) {
@@ -32,6 +37,11 @@ class FileService
         }, $files);
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param array $data
+     * @return bool
+     */
     public static function createFile(DatabaseInterface $db, array $data): bool
     {
         try {
@@ -41,6 +51,12 @@ class FileService
         }
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param array $data
+     * @param array $conditions
+     * @return bool
+     */
     public static function updateFile(DatabaseInterface $db, array $data, array $conditions): bool
     {
         try {
@@ -51,6 +67,11 @@ class FileService
         }
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $fileId
+     * @return bool
+     */
     public static function deleteFile(DatabaseInterface $db, int $fileId): bool
     {
         try {
@@ -85,6 +106,11 @@ class FileService
         }
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param int $fileId
+     * @return FileModel|null
+     */
     public static function findFile(DatabaseInterface $db, int $fileId): ?FileModel
     {
         $file = $db->first('files', ['id' => $fileId]);
@@ -104,6 +130,11 @@ class FileService
         );
     }
 
+    /**
+     * @param DatabaseInterface $db
+     * @param array $data
+     * @return FileModel|null
+     */
     public static function findSharedFile(DatabaseInterface $db, array $data): ?FileModel {
         $file = $db->first('files', $data);
         if (!$file) {
