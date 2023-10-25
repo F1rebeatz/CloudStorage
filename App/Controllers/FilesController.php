@@ -23,7 +23,7 @@ class FilesController extends Controller
         $this->view('files/add', [
             'directories' => $directories,
             'directoryId' => $directoryId,
-        ]);
+        ], 'Add File');
     }
 
     /**
@@ -192,7 +192,7 @@ class FilesController extends Controller
     public function show(int $id): void {
         $file = FileService::findFile($this->db(), $id);
         $user = UserService::getUserById($this->db(), $file->getUserId());
-        $this->view('files/show', ['file' => $file, 'user' => $user]);
+        $this->view('files/show', ['file' => $file, 'user' => $user], 'Files');
     }
 
     /**

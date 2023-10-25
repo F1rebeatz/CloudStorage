@@ -12,7 +12,7 @@ class LoginController extends Controller
      */
     public function index(): void
     {
-        $this->view('login');
+        $this->view('login', [], 'Login');
     }
 
     /**

@@ -14,7 +14,7 @@ class AdminController extends Controller
     public function index(): void
     {
         $users = UserService::getAllUsers($this->db());
-        $this->view('admin/users/list', ['users' => $users]);
+        $this->view('admin/users/list', ['users' => $users], 'Admin Panel');
     }
 
     /*
@@ -31,7 +31,7 @@ class AdminController extends Controller
             return;
         }
 
-        $this->view('admin/users/get', ['user' => $user]);
+        $this->view('admin/users/get', ['user' => $user], 'Admin Panel');
     }
 
     /**
@@ -65,7 +65,7 @@ class AdminController extends Controller
             return;
         }
 
-        $this->view('admin/users/edit', ['user' => $user]);
+        $this->view('admin/users/edit', ['user' => $user], 'Admin Panel');
     }
 
     /**

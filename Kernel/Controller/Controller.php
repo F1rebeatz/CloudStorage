@@ -21,9 +21,9 @@ abstract class Controller
     private AuthInterface $auth;
     private StorageInterface $storage;
 
-    public function view(string $name, array $data = []): void
+    public function view(string $name, array $data = [], string $title = ''): void
     {
-        $this->view->page($name, $data);
+        $this->view->page($name, $data, $title);
     }
 
     public function setView(ViewInterface $view): void

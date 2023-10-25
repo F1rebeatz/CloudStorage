@@ -12,7 +12,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $this->view('register');
+        $this->view('register', [], 'Register');
     }
     /**
      * @return void

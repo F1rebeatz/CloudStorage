@@ -19,7 +19,7 @@ class DirectoryController extends Controller
         $files = FileService::getFilesInDirectory($this->db(), $id);
 
         if ($directory) {
-            $this->view('/directories/get', ['directory' => $directory, 'files' => $files, 'subdirectories' => $subdirectories]);
+            $this->view('/directories/get', ['directory' => $directory, 'files' => $files, 'subdirectories' => $subdirectories], 'Directory');
         } else {
             $this->redirect("directories/get/{$id}");
         }
@@ -31,7 +31,7 @@ class DirectoryController extends Controller
     public function add(): void
     {
         $directory = intval($this->request()->query('directory'));
-        $this->view('directories/add', ['directory' => $directory]);
+        $this->view('directories/add', ['directory' => $directory], 'Add Directory');
     }
 
     /**
@@ -68,7 +68,7 @@ class DirectoryController extends Controller
             return;
         }
 
-        $this->view('directories/edit', ['directory' => $directory]);
+        $this->view('directories/edit', ['directory' => $directory], 'Edit directory');
     }
 
     /**
