@@ -1,0 +1,5 @@
+.idea
+src/vendor/
+src/node_modules/
+src/public/storage_link
+docker/volume/mysql/
